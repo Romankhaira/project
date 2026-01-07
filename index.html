@@ -1,0 +1,111 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEINTURE LAND</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-text">PEINTURE</span><span class="logo-accent"> LAND</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#brands" class="nav-link">Brands</a>
+                <a href="index.html#materials" class="nav-link">Materials</a>
+                <div class="cart-icon-container">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">PROFESSIONAL PAINTS</span>
+                <span class="title-line">AND COATING</span>
+                <span class="title-accent">SOLUTION</span>
+            </h1>
+            <p class="hero-subtitle">Premium Paint and Building Material Store</p>
+            <div class="hero-cta">
+                <a href="#brands" class="btn btn-primary">Explore Brands</a>
+                <a href="#materials" class="btn btn-secondary">View Tools</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="paint-canister" id="canister-1"></div>
+            <div class="paint-canister" id="canister-2"></div>
+            <div class="paint-canister" id="canister-3"></div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section id="brands" class="section brands-section">
+        <div class="section-header">
+            <h2 class="section-title">Professional <span class="accent">Brands</span></h2>
+            <p class="section-subtitle">Select from industry-leading coating manufacturers</p>
+        </div>
+        <div class="brands-grid" id="brands-grid">
+            <!-- Brands will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section id="materials" class="section materials-section">
+        <div class="section-header">
+            <h2 class="section-title">Application <span class="accent">Tools</span></h2>
+            <p class="section-subtitle">Premium tools for perfect application</p>
+        </div>
+        <div class="materials-grid" id="materials-grid">
+            <!-- Materials will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h3>Your Cart</h3>
+                <button class="close-cart">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items loaded here -->
+            </div>
+            <div class="cart-summary">
+                <div class="summary-text" id="cart-summary-text"></div>
+                <div class="cart-actions">
+                    <button class="btn btn-secondary" id="copy-cart">Copy Summary</button>
+                    <button class="btn btn-primary" id="whatsapp-order">
+                        <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
