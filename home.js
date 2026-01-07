@@ -192,7 +192,6 @@ class HomePage {
         }
         
         const brandId = card.dataset.brandId;
-        const brandName = card.dataset.brandName;
         
         if (brandId) {
           // Animate card click
@@ -224,7 +223,6 @@ class HomePage {
         }
         
         const materialId = card.dataset.materialId;
-        const materialName = card.dataset.materialName;
         
         if (materialId) {
           // Animate card click
@@ -249,6 +247,7 @@ class HomePage {
     console.log('Card click handlers setup complete');
   }
 
+
   setupPageAnimations() {
     console.log('HomePage: Setting up page animations...');
     
@@ -257,29 +256,50 @@ class HomePage {
     if (pageHeader) {
       gsap.from(pageHeader, {
         duration: 1.5,
-        y: -50,
+        y: -100,
         opacity: 0,
-        ease: "power4.out"
+        rotationX: 15,
+        ease: "power4.out",
+        delay: 0.3
       });
     }
     
-    // Animate section headers
+    // Animate section headers with shimmer effect
     const sections = document.querySelectorAll('section');
     sections.forEach((section, index) => {
-      setTimeout(() => {
-        if (window.app && window.app.animateSectionEntrance) {
-          window.app.animateSectionEntrance(section);
-        }
-      }, index * 200);
+      const header = section.querySelector('h2');
+      if (header) {
+        gsap.from(header, {
+          duration: 1,
+          x: -50,
+          opacity: 0,
+          skewX: 10,
+          ease: "power3.out",
+          delay: 0.5 + (index * 0.2)
+        });
+      }
+      
+      // Animate section content
+      const content = section.querySelectorAll('p, .grid');
+      content.forEach((el, i) => {
+        gsap.from(el, {
+          duration: 0.8,
+          y: 30,
+          opacity: 0,
+          ease: "power3.out",
+          delay: 0.7 + (index * 0.2) + (i * 0.1)
+        });
+      });
     });
     
-    // Setup floating animations
+    // Setup card animations after data loads
     setTimeout(() => {
-      if (window.app && window.app.setupFloatingAnimations) {
-        window.app.setupFloatingAnimations();
+      if (window.app && window.app.setupCardHoverEffects) {
+        window.app.setupCardHoverEffects('.brand-card, .material-card');
       }
     }, 1000);
   }
+
 
   showError() {
     const containers = ['brands-grid', 'materials-grid'];
