@@ -88,7 +88,7 @@ async function renderProducts(products) {
 async function createProductCard(product) {
     // Create card element
     const card = document.createElement('div');
-    card.className = 'card product-card';
+    card.className = 'card product-card reveal-card';
     card.dataset.productId = product.id;
     
     // Fetch product properties for this product

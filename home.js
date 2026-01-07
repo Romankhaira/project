@@ -1,8 +1,5 @@
 // js/home.js
 document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize GSAP animations
-    initHomeAnimations();
-
     // Wait for supabaseClient to be available
     if (!window.supabaseClient) {
         console.error('Supabase client not initialized');
@@ -10,7 +7,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-        // In the try-catch block after rendering:
     try {
         const [brandsResponse, materialsResponse] = await Promise.all([
             window.supabaseClient.from('brands').select('*'),
@@ -31,8 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.removeLoadingStates();
         }
         
-        // Animate cards
-        animateCards();
         
     } catch (error) {
         console.error('Error loading data:', error);
@@ -109,76 +103,7 @@ function renderMaterials(materials) {
     });
 }
 
-function initHomeAnimations() {
-    // Animate hero title lines
-    const titleLines = document.querySelectorAll('.title-line, .title-accent');
-    if (titleLines.length > 0) {
-        gsap.to(titleLines, {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            stagger: 0.3,
-            ease: 'power3.out',
-            delay: 0.5
-        });
-    }
 
-    // Animate hero subtitle
-    const heroSubtitle = document.querySelector('.hero-subtitle');
-    if (heroSubtitle) {
-        gsap.from(heroSubtitle, {
-            opacity: 0,
-            y: 20,
-            duration: 1,
-            delay: 1.5,
-            ease: 'power2.out'
-        });
-    }
-
-    // Animate CTA buttons
-    const heroCta = document.querySelector('.hero-cta');
-    if (heroCta) {
-        gsap.from(heroCta, {
-            opacity: 0,
-            y: 20,
-            duration: 1,
-            delay: 2,
-            ease: 'power2.out'
-        });
-    }
-
-    // 3D tilt effect for paint canisters
-    const canisters = document.querySelectorAll('.paint-canister');
-    canisters.forEach((canister, index) => {
-        gsap.to(canister, {
-            rotation: index % 2 === 0 ? -3 : 3,
-            y: index % 2 === 0 ? -10 : 10,
-            duration: 3,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: index * 0.5
-        });
-    });
-}
-
-function animateCards() {
-    const cards = document.querySelectorAll('.card');
-    if (cards.length > 0) {
-        gsap.from(cards, {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: '.brands-grid, .materials-grid',
-                start: 'top 80%',
-                end: 'bottom 20%',
-                toggleActions: 'play none none none'
-            }
-        });
-    }
-}
 
 function showError(message) {
     const errorDiv = document.createElement('div');
