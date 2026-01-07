@@ -172,31 +172,43 @@ class BrandPage {
     const searchInput = document.getElementById('product-search');
     if (!searchInput) return;
     
+    let searchTimeout;
+    
     searchInput.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
+      clearTimeout(searchTimeout);
       
-      if (!this.originalProducts) return;
-      
-      const filtered = this.originalProducts.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.description.toLowerCase().includes(searchTerm)
-      );
-      
-      this.renderProducts(filtered);
-      
-      // Animate filtered results
-      gsap.fromTo('#products-grid .card',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          stagger: 0.05,
-          ease: "power2.out"
+      searchTimeout = setTimeout(() => {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        
+        if (!this.originalProducts || this.originalProducts.length === 0) return;
+        
+        if (searchTerm === '') {
+          this.renderProducts(this.originalProducts);
+          return;
         }
-      );
+        
+        const filtered = this.originalProducts.filter(product =>
+          product.name.toLowerCase().includes(searchTerm) ||
+          product.description.toLowerCase().includes(searchTerm)
+        );
+        
+        this.renderProducts(filtered);
+        
+        // Animate filtered results
+        gsap.fromTo('#products-grid .card',
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            stagger: 0.05,
+            ease: "power2.out"
+          }
+        );
+      }, 300); // 300ms delay for better performance
     });
   }
+
 
   addToCart(product) {
     const event = new CustomEvent('addToCart', {
