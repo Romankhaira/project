@@ -55,125 +55,37 @@ class AppController {
     }, 100);
   }
 
-
-  
-setupCursorGlow() {
-  console.log('Setting up cursor glow...');
-  
-  // Remove existing cursor glow
-  document.querySelectorAll('.cursor-glow').forEach(el => el.remove());
-  
-  // Create cursor glow element
-  this.cursorGlow = document.createElement('div');
-  this.cursorGlow.className = 'cursor-glow';
-  
-  // Force display and visibility with inline styles
-  this.cursorGlow.style.cssText = `
-    display: block !important;
-    visibility: visible !important;
-    position: fixed !important;
-    width: 200px !important;
-    height: 200px !important;
-    background: radial-gradient(circle, rgba(0,224,255,0.8) 0%, rgba(0,224,255,0) 70%) !important;
-    border-radius: 50% !important;
-    pointer-events: none !important;
-    z-index: 9999 !important;
-    filter: blur(30px) !important;
-    opacity: 0.7 !important;
-    transform: translate(-50%, -50%) !important;
-    left: 0 !important;
-    top: 0 !important;
-    mix-blend-mode: screen !important;
-    will-change: transform !important;
-  `;
-  
-  // Add to body
-  document.body.appendChild(this.cursorGlow);
-  
-  console.log('Cursor glow element created');
-  
-  // Track mouse position in viewport coordinates
-  let clientX = window.innerWidth / 2;
-  let clientY = window.innerHeight / 2;
-  let lastScrollY = window.scrollY;
-  
-  // Function to update cursor position
-  const updateCursorPosition = (e) => {
-    clientX = e.clientX;
-    clientY = e.clientY;
+  setupCursorGlow() {
+    // Remove existing cursor glow
+    const existingGlow = document.querySelector('.cursor-glow');
+    if (existingGlow) existingGlow.remove();
     
-    // Update glow position immediately
-    this.cursorGlow.style.left = clientX + 'px';
-    this.cursorGlow.style.top = (clientY + window.scrollY) + 'px';
-    this.cursorGlow.style.opacity = '0.7';
-  };
-  
-  // Function to handle scroll updates
-  const updateOnScroll = () => {
-    // Get current scroll position
-    const currentScrollY = window.scrollY;
+    // Create cursor glow element
+    this.cursorGlow = document.createElement('div');
+    this.cursorGlow.className = 'cursor-glow';
+    document.body.appendChild(this.cursorGlow);
+
+    // Simple mouse tracking - FIXED POSITION
+    document.addEventListener('mousemove', (e) => {
+      // Use fixed positioning - no scroll adjustment needed!
+      this.cursorGlow.style.left = e.clientX + 'px';
+      this.cursorGlow.style.top = e.clientY + 'px';
+    });
+
+    // Hide/show effects
+    document.addEventListener('mouseleave', () => {
+      this.cursorGlow.style.opacity = '0';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      this.cursorGlow.style.opacity = '0.7';
+    });
     
-    // Only update if scroll position changed
-    if (currentScrollY !== lastScrollY) {
-      lastScrollY = currentScrollY;
-      
-      // Update glow position based on current mouse position and scroll
-      this.cursorGlow.style.top = (clientY + currentScrollY) + 'px';
-    }
-  };
-  
-  // Function to handle window resize
-  const updateOnResize = () => {
-    // Keep cursor within bounds
-    if (clientX > window.innerWidth) clientX = window.innerWidth - 20;
-    if (clientY > window.innerHeight) clientY = window.innerHeight - 20;
-    
-    // Update position
-    this.cursorGlow.style.left = clientX + 'px';
-    this.cursorGlow.style.top = (clientY + window.scrollY) + 'px';
-  };
-  
-  // Add event listeners
-  document.addEventListener('mousemove', updateCursorPosition);
-  window.addEventListener('scroll', updateOnScroll);
-  window.addEventListener('resize', updateOnResize);
-  
-  // Hide/show on mouse enter/leave
-  document.addEventListener('mouseleave', () => {
-    this.cursorGlow.style.opacity = '0';
-  });
-  
-  document.addEventListener('mouseenter', () => {
-    this.cursorGlow.style.opacity = '0.7';
-  });
-  
-  // Initial position (center of viewport)
-  this.cursorGlow.style.left = clientX + 'px';
-  this.cursorGlow.style.top = (clientY + window.scrollY) + 'px';
-  
-  // Request animation frame for smooth updates during scroll
-  let animationFrameId;
-  const smoothUpdate = () => {
-    this.cursorGlow.style.top = (clientY + window.scrollY) + 'px';
-    animationFrameId = requestAnimationFrame(smoothUpdate);
-  };
-  
-  // Start smooth updates
-  animationFrameId = requestAnimationFrame(smoothUpdate);
-  
-  // Store handlers for cleanup
-  this.cursorHandlers = {
-    mousemove: updateCursorPosition,
-    scroll: updateOnScroll,
-    resize: updateOnResize
-  };
-  
-  // Store animation frame ID for cleanup
-  this.cursorAnimationFrame = animationFrameId;
-}
-
-
-
+    // Initial fade in
+    setTimeout(() => {
+      this.cursorGlow.style.opacity = '0.7';
+    }, 500);
+  }
 
   setupPageTransitions() {
     // Simple fade in
@@ -197,128 +109,115 @@ setupCursorGlow() {
     // Setup scroll progress indicators
     this.setupScrollProgress();
   }
-
+  
   setupStaggeredReveals() {
-    // Create a master timeline for scroll animations
-    const revealTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5
-      }
-    });
-
-    // Animate page header on load
-    const pageHeader = document.querySelector('.page-header');
-    if (pageHeader) {
-      gsap.from(pageHeader, {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
-      });
-    }
-
-    // Setup observer for staggered card reveals
+    console.log('Setting up staggered reveals...');
+    
+    // Create observer for cards
     const cardObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
           const card = entry.target;
           
-          // Remove observer once animated
+          // Mark as animated
+          card.dataset.animated = 'true';
+          
+          // Stop observing
           cardObserver.unobserve(card);
           
-          // Staggered animation with index-based delay
+          // Cinematic entrance animation
           gsap.fromTo(card,
             {
-              y: 80,
+              y: 100,
               opacity: 0,
-              rotationX: 10,
-              scale: 0.9
+              rotationX: 15,
+              rotationY: 10,
+              scale: 0.8,
+              filter: 'blur(10px)'
             },
             {
               y: 0,
               opacity: 1,
               rotationX: 0,
+              rotationY: 0,
               scale: 1,
-              duration: 1,
-              delay: index * 0.1,
-              ease: "back.out(1.4)",
-              clearProps: "all"
+              filter: 'blur(0px)',
+              duration: 1.2,
+              delay: index * 0.15,
+              ease: "power4.out",
+              overwrite: true
             }
           );
         }
       });
     }, {
-      threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px"
+      threshold: 0.05,
+      rootMargin: "0px 0px -50px 0px"
     });
-
-    // Observe all cards
-    document.querySelectorAll('.card').forEach(card => {
-      cardObserver.observe(card);
-    });
+  
+    // Observe all cards with class .card
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.card:not([data-animated])');
+      console.log(`Found ${cards.length} cards to animate`);
+      
+      cards.forEach(card => {
+        cardObserver.observe(card);
+      });
+    }, 300);
     
     this.scrollObservers.add(cardObserver);
   }
-
+  
   setupParallaxEffects() {
-    // Add parallax to header images
-    const headerImages = document.querySelectorAll('.card-image, .product-image');
+    // Add subtle parallax to card images
+    const cardImages = document.querySelectorAll('.card-image');
     
-    headerImages.forEach((img, index) => {
+    cardImages.forEach((img, index) => {
       const parallaxTL = gsap.timeline({
         scrollTrigger: {
-          trigger: img,
+          trigger: img.closest('.card'),
           start: "top bottom",
           end: "bottom top",
-          scrub: 0.5
+          scrub: 0.5,
+          toggleActions: "play none none reverse"
         }
       });
       
       parallaxTL.to(img, {
-        y: -50,
+        y: -30,
+        scale: 1.05,
+        duration: 1,
         ease: "none"
       });
       
       this.animationTriggers.add(parallaxTL.scrollTrigger);
     });
   }
-
-  setupScrollProgress() {
-    // Create scroll progress bar
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-progress';
-    progressBar.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-      z-index: 9998;
-      transition: width 0.1s;
-    `;
-    document.body.appendChild(progressBar);
-
-    // Update progress on scroll
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      progressBar.style.width = scrolled + "%";
-    });
-  }
-
+  
   setupCardHoverEffects(selector = '.card') {
     const cards = document.querySelectorAll(selector);
+    console.log(`Setting up hover effects for ${cards.length} cards`);
     
     cards.forEach(card => {
       if (card.dataset.hasHover) return;
       card.dataset.hasHover = 'true';
       
-      // Enhanced 3D hover effect
+      // Enhanced 3D hover with depth
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          scale: 1.02,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        // Add depth shadow
+        gsap.to(card, {
+          boxShadow: '0 25px 50px rgba(0, 224, 255, 0.15), 0 0 100px rgba(0, 224, 255, 0.05)',
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+      
       card.addEventListener('mousemove', (e) => {
         if (window.innerWidth < 768) return;
         
@@ -328,93 +227,119 @@ setupCursorGlow() {
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         
-        // Calculate rotation
-        const rotateY = ((x - centerX) / rect.width) * 20;
-        const rotateX = ((centerY - y) / rect.height) * 20;
+        // Calculate 3D rotation
+        const rotateY = ((x - centerX) / rect.width) * 15;
+        const rotateX = ((centerY - y) / rect.height) * 10;
         
-        // Animate card
         gsap.to(card, {
-          duration: 0.3,
           rotateX: rotateX,
           rotateY: rotateY,
-          transformPerspective: 1000,
+          transformPerspective: 1200,
+          duration: 0.3,
           ease: "power2.out"
         });
         
-        // Add floating effect to image
-        const img = card.querySelector('img');
+        // Float image on hover
+        const img = card.querySelector('.card-image');
         if (img) {
           gsap.to(img, {
+            y: -15,
+            scale: 1.08,
             duration: 0.3,
-            y: -10,
-            scale: 1.05,
+            ease: "power2.out"
+          });
+        }
+        
+        // Glow effect
+        const glow = card.querySelector('.glass-card');
+        if (glow) {
+          gsap.to(glow, {
+            boxShadow: '0 0 40px rgba(0, 224, 255, 0.3), inset 0 0 40px rgba(255, 176, 0, 0.1)',
+            duration: 0.3,
             ease: "power2.out"
           });
         }
       });
       
       card.addEventListener('mouseleave', () => {
+        // Reset all transformations
         gsap.to(card, {
-          duration: 0.5,
+          scale: 1,
           rotateX: 0,
           rotateY: 0,
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+          duration: 0.5,
           ease: "power3.out"
         });
         
-        const img = card.querySelector('img');
+        // Reset image
+        const img = card.querySelector('.card-image');
         if (img) {
           gsap.to(img, {
-            duration: 0.5,
             y: 0,
             scale: 1,
+            duration: 0.5,
+            ease: "power3.out"
+          });
+        }
+        
+        // Reset glow
+        const glow = card.querySelector('.glass-card');
+        if (glow) {
+          gsap.to(glow, {
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            duration: 0.5,
             ease: "power3.out"
           });
         }
       });
     });
   }
-
-  // NEW: Cinematic Entrance Animation for Sections
-  animateSectionEntrance(section) {
-    const children = section.querySelectorAll(':scope > *');
+  
+  setupScrollProgress() {
+    // Remove existing progress bar
+    const existingProgress = document.querySelector('.scroll-progress');
+    if (existingProgress) existingProgress.remove();
     
-    gsap.fromTo(children,
-      {
-        y: 50,
-        opacity: 0,
-        scale: 0.95
-      },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
-  }
-
-  // NEW: Floating Animation for Elements
-  setupFloatingAnimations() {
-    const floatElements = document.querySelectorAll('.glass-card, .card');
-    
-    floatElements.forEach(el => {
-      gsap.to(el, {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: Math.random() * 1
+    // Create scroll progress bar
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    progressBar.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, 
+        var(--accent-primary), 
+        var(--accent-secondary),
+        var(--accent-primary)
+      );
+      z-index: 9998;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 20px var(--accent-primary);
+    `;
+    document.body.appendChild(progressBar);
+  
+    // Update progress on scroll with GSAP for smoothness
+    let scrollTween;
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      
+      if (scrollTween) scrollTween.kill();
+      
+      scrollTween = gsap.to(progressBar, {
+        width: `${scrolled}%`,
+        duration: 0.2,
+        ease: "power2.out"
       });
     });
+    
+    this.progressBar = progressBar;
   }
+
 
   initCart() {
     const cart = JSON.parse(localStorage.getItem('paint_cart')) || [];
@@ -516,34 +441,21 @@ setupCursorGlow() {
       if (trigger.kill) trigger.kill();
     });
     this.animationTriggers.clear();
-  
+    
     // Disconnect observers
     this.scrollObservers.forEach(observer => {
       observer.disconnect();
     });
     this.scrollObservers.clear();
-  
+    
     if (this.lazyObserver) {
       this.lazyObserver.disconnect();
     }
-  
+    
     // Remove cursor glow
-    if (this.cursorGlow) {
-      this.cursorGlow.remove();
-    }
-  
-    // Remove cursor event listeners
-    if (this.cursorHandlers) {
-      document.removeEventListener('mousemove', this.cursorHandlers.mousemove);
-      window.removeEventListener('scroll', this.cursorHandlers.scroll);
-      window.removeEventListener('resize', this.cursorHandlers.resize);
-    }
-  
-    // Cancel animation frame
-    if (this.cursorAnimationFrame) {
-      cancelAnimationFrame(this.cursorAnimationFrame);
-    }
-  
+    const cursorGlow = document.querySelector('.cursor-glow');
+    if (cursorGlow) cursorGlow.remove();
+    
     // Remove progress bar
     const progressBar = document.querySelector('.scroll-progress');
     if (progressBar) progressBar.remove();
