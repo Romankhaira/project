@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PEINTURE LAND</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow"></div>
+    
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-paint-roller logo-icon"></i>
+                <span>PEINTURE LAND</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="cart.html" class="nav-link">Cart</a>
+                <button class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" style="display: none;">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <h1>Industrial Paint Solutions</h1>
+            <p class="page-subtitle">Premium coatings & professional tools for industrial excellence. Cinematic quality meets industrial strength.</p>
+        </header>
+        
+        <!-- Brands Section -->
+        <section class="section reveal">
+            <h2 class="shimmer"><i class="fas fa-industry"></i> Premium Brands</h2>
+            <p class="section-subtitle">Explore our curated selection of top-tier paint brands</p>
+            <div id="brands-grid" class="grid grid-3">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading brands...</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Materials Section -->
+        <section class="section">
+            <h2><i class="fas fa-tools"></i> Professional Tools</h2>
+            <p class="section-subtitle">High-quality equipment for perfect application</p>
+            <div id="materials-grid" class="grid grid-3">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading tools...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <p>© 2024 PaintPro Industrial. Cinematic Dark Industrial Theme.</p>
+        <p class="footer-sub">Premium coatings for professionals.</p>
+    </footer>
+<script>
+  // Debug cursor glow
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, checking cursor glow...');
+    
+    // Check if cursor glow exists
+    const glow = document.querySelector('.cursor-glow');
+    console.log('Cursor glow element exists:', !!glow);
+    
+    if (glow) {
+      console.log('Cursor glow styles:', {
+        display: glow.style.display,
+        visibility: glow.style.visibility,
+        opacity: glow.style.opacity,
+        left: glow.style.left,
+        top: glow.style.top,
+        width: glow.offsetWidth,
+        height: glow.offsetHeight
+      });
+      
+      // Make it red for debugging
+      glow.style.background = 'radial-gradient(circle at center, red 0%, orange 20%, yellow 40%, transparent 70%)';
+      glow.style.filter = 'blur(20px)';
+      glow.style.opacity = '1';
+    }
+    
+    // Test mouse movement
+    document.addEventListener('mousemove', function(e) {
+      console.log('Mouse position:', e.clientX, e.clientY);
+    });
+  });
+</script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/pages/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pages/home.js"></script>
+</body>
+</html>
