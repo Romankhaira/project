@@ -69,38 +69,10 @@
         <p>© 2024 PaintPro Industrial. Cinematic Dark Industrial Theme.</p>
         <p class="footer-sub">Premium coatings for professionals.</p>
     </footer>
-<script>
-  // Debug cursor glow
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, checking cursor glow...');
+
+
+
     
-    // Check if cursor glow exists
-    const glow = document.querySelector('.cursor-glow');
-    console.log('Cursor glow element exists:', !!glow);
-    
-    if (glow) {
-      console.log('Cursor glow styles:', {
-        display: glow.style.display,
-        visibility: glow.style.visibility,
-        opacity: glow.style.opacity,
-        left: glow.style.left,
-        top: glow.style.top,
-        width: glow.offsetWidth,
-        height: glow.offsetHeight
-      });
-      
-      // Make it red for debugging
-      glow.style.background = 'radial-gradient(circle at center, red 0%, orange 20%, yellow 40%, transparent 70%)';
-      glow.style.filter = 'blur(20px)';
-      glow.style.opacity = '1';
-    }
-    
-    // Test mouse movement
-    document.addEventListener('mousemove', function(e) {
-      console.log('Mouse position:', e.clientX, e.clientY);
-    });
-  });
-</script>
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
