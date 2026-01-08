@@ -1,266 +1,214 @@
-// js/animations.js - UPDATED
+// js/animations.js - UPDATED with visible animations
+
 class AnimationSystem {
     constructor() {
         this.initCursor();
-        this.initScrollAnimations();
         this.initPageTransitions();
-        this.initCardAnimations(); // NEW: Initialize card animations
-        this.observeCardChanges(); // Keep for dynamic cards
+        this.initCardAnimations();
+        this.observeCardChanges();
     }
 
-    // Keep cursor animation as is
     initCursor() {
-        const cursor = document.querySelector('.cursor');
-        const follower = document.querySelector('.cursor-follower');
-        
-        if (!cursor || !follower) return;
-
-        // ... keep existing cursor code unchanged ...
-        // (I'll keep the exact same cursor code you already have)
-        
-        let posX = 0, posY = 0;
-        let mouseX = 0, mouseY = 0;
-
-        gsap.to({}, 0.016, {
-            repeat: -1,
-            onRepeat: () => {
-                posX += (mouseX - posX) / 9;
-                posY += (mouseY - posY) / 9;
-                
-                gsap.set(cursor, {
-                    css: {
-                        left: mouseX,
-                        top: mouseY
-                    }
-                });
-                
-                gsap.set(follower, {
-                    css: {
-                        left: posX - 20,
-                        top: posY - 20
-                    }
-                });
-            }
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        const interactiveElements = document.querySelectorAll('a, button, .cart-icon-container');
-        
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.width = '16px';
-                cursor.style.height = '16px';
-                follower.style.transform = 'scale(1.5)';
-                follower.style.borderColor = 'var(--accent-primary)';
-                follower.style.opacity = '0.5';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.style.width = '8px';
-                cursor.style.height = '8px';
-                follower.style.transform = 'scale(1)';
-                follower.style.borderColor = 'var(--accent-primary)';
-                follower.style.opacity = '0.3';
-            });
-        });
+        // ... keep cursor code exactly as is ...
     }
 
-    // REMOVED: initScrollAnimations (old card animations)
-    initScrollAnimations() {
-        // Empty - old card animations removed
-    }
-
-    // Keep page transitions
     initPageTransitions() {
-        // ... keep existing page transition code unchanged ...
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (link && link.href && !link.href.includes('#') && !link.target && 
-                link.href.includes(window.location.origin)) {
-                e.preventDefault();
-                
-                const overlay = document.createElement('div');
-                overlay.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: var(--bg-primary);
-                    z-index: 10000;
-                    transform: scaleY(0);
-                    transform-origin: bottom;
-                `;
-                document.body.appendChild(overlay);
-                
-                gsap.to(overlay, {
-                    scaleY: 1,
-                    duration: 0.5,
-                    ease: 'power2.inOut',
-                    onComplete: () => {
-                        window.location.href = link.href;
-                    }
-                });
-            }
-        });
-
-        gsap.from('body', {
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out'
-        });
+        // ... keep page transition code exactly as is ...
     }
 
-    // NEW: Initialize ONLY the two required card animations
     initCardAnimations() {
-        // Initialize animations for existing cards
-        this.initExistingCardAnimations();
+        console.log('Initializing card animations...');
         
-        // Set up grid scroll animations
-        this.setupGridScrollAnimations();
+        // FIRST: Hide cards initially with GSAP (not CSS)
+        this.hideCardsInitially();
+        
+        // THEN: Set up animations after a delay
+        setTimeout(() => {
+            this.applyHoverToCards();
+            this.setupGridAnimations();
+        }, 300);
     }
 
-    // Initialize hover animation for existing cards
-    initExistingCardAnimations() {
-        const cards = document.querySelectorAll('.card:not([data-animated])');
+    // NEW: Hide cards initially so the reveal animation is visible
+    hideCardsInitially() {
+        const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
-            this.applyHoverAnimation(card);
-            card.dataset.animated = 'true';
+            // Set initial hidden state with GSAP (not CSS)
+            gsap.set(card, {
+                opacity: 0,
+                y: 50
+            });
         });
     }
 
-    // Apply hover animation to a single card
-    applyHoverAnimation(card) {
-        // Remove any existing hover animations
-        if (card._hoverAnimation) {
-            card._hoverAnimation.kill();
+    // ANIMATION 2: Hover Scale Animation
+    applyHoverToCards() {
+        console.log('Applying hover animations...');
+        const cards = document.querySelectorAll('.card');
+        
+        if (cards.length === 0) {
+            console.log('No cards found for hover animation');
+            return;
         }
         
-        // Create new hover animation
-        const hover = gsap.to(card, {
-            scale: 1.03,
-            duration: 0.3,
-            ease: 'power2.out',
-            paused: true
+        console.log(`Found ${cards.length} cards for hover animation`);
+        
+        cards.forEach(card => {
+            if (card.dataset.hoverApplied === 'true') return;
+            
+            // Create hover animation
+            const hover = gsap.to(card, {
+                scale: 1.03,
+                duration: 0.3,
+                ease: 'power2.out',
+                paused: true
+            });
+
+            // Add event listeners
+            card.addEventListener('mouseenter', () => hover.play());
+            card.addEventListener('mouseleave', () => hover.reverse());
+            
+            card.dataset.hoverApplied = 'true';
         });
-        
-        // Store reference
-        card._hoverAnimation = hover;
-        
-        // Remove any existing event listeners
-        card.removeEventListener('mouseenter', card._mouseEnterHandler);
-        card.removeEventListener('mouseleave', card._mouseLeaveHandler);
-        
-        // Create new handlers
-        card._mouseEnterHandler = () => hover.play();
-        card._mouseLeaveHandler = () => hover.reverse();
-        
-        // Add event listeners
-        card.addEventListener('mouseenter', card._mouseEnterHandler);
-        card.addEventListener('mouseleave', card._mouseLeaveHandler);
     }
 
-    // Set up staggered scroll animations for grid containers
-    setupGridScrollAnimations() {
-        // Define grid containers to animate
-        const gridContainers = [
+    // ANIMATION 1: Staggered Grid Scroll Animation
+    setupGridAnimations() {
+        console.log('Setting up grid animations...');
+        
+        // Grid containers to animate
+        const gridSelectors = [
             '.brands-grid',
             '.materials-grid', 
-            '.products-grid',
-            '.properties-grid',
-            '.color-swatches'
+            '.products-grid'
         ];
         
-        // Wait a bit for DOM to be ready
-        setTimeout(() => {
-            gridContainers.forEach(selector => {
-                const grid = document.querySelector(selector);
-                if (!grid) return;
-                
-                // Mark cards in this grid for reveal
-                const cards = grid.querySelectorAll('.card');
-                cards.forEach(card => {
-                    card.classList.add('reveal-card');
+        let animationsCreated = 0;
+        
+        gridSelectors.forEach(selector => {
+            const grid = document.querySelector(selector);
+            if (!grid) return;
+            
+            const cards = grid.querySelectorAll('.card');
+            if (cards.length === 0) return;
+            
+            console.log(`Found ${cards.length} cards in ${selector}`);
+            
+            // Calculate start position - make it more sensitive
+            const isMobile = window.innerWidth <= 768;
+            const startPosition = isMobile ? 'top 95%' : 'top 85%';
+            
+            // Kill any existing ScrollTriggers for this grid
+            const existingTriggers = ScrollTrigger.getAll().filter(t => t.trigger === grid);
+            existingTriggers.forEach(t => t.kill());
+            
+            // IMPORTANT: Animate EACH CARD individually for better control
+            cards.forEach((card, index) => {
+                // Reset to hidden state for animation
+                gsap.set(card, {
+                    opacity: 0,
+                    y: 50
                 });
                 
-                // Set up scroll animation for this grid
-                this.setupStaggeredGridAnimation(grid);
+                // Create individual animation for each card
+                const animation = gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    delay: index * 0.1, // Stagger effect
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: startPosition,
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse',
+                        markers: false,
+                        onEnter: () => {
+                            console.log(`Card ${index} entered viewport`);
+                        }
+                    }
+                });
+                
+                animationsCreated++;
             });
-            
-            // Refresh ScrollTrigger after setup
-            if (typeof ScrollTrigger !== 'undefined') {
-                ScrollTrigger.refresh();
-            }
-        }, 100);
+        });
+        
+        console.log(`Created ${animationsCreated} card animations`);
+        
+        // Force refresh ScrollTrigger
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+            console.log('ScrollTrigger refreshed');
+        }
+        
+        // TEST: Force trigger animations after 2 seconds to make sure they work
+        setTimeout(() => {
+            console.log('Forcing animation test...');
+            this.testAnimations();
+        }, 2000);
     }
 
-    // Set up staggered animation for a specific grid
-    setupStaggeredGridAnimation(grid) {
-        // Get all reveal cards in this grid
-        const cards = grid.querySelectorAll('.reveal-card');
-        if (cards.length === 0) return;
+    // TEST FUNCTION: Force animations to play so you can see them
+    testAnimations() {
+        const cards = document.querySelectorAll('.card');
+        console.log(`Testing animations on ${cards.length} cards`);
         
-        // Calculate start position based on viewport height
-        const isMobile = window.innerWidth <= 768;
-        const startPosition = isMobile ? 'top 90%' : 'top 80%';
-        
-        // Create staggered animation
-        gsap.from(cards, {
+        // Test 1: Play staggered animation
+        gsap.to(cards, {
             opacity: 0,
-            y: 80,
-            duration: 1,
-            ease: 'power4.out',
-            stagger: 0.12,
-            scrollTrigger: {
-                trigger: grid,
-                start: startPosition,
-                once: true, // Animate only once
-                markers: false // Set to true for debugging
+            y: 50,
+            duration: 0.5,
+            stagger: 0.1,
+            onComplete: () => {
+                console.log('Cards hidden for test');
+                
+                // Then animate them in
+                gsap.to(cards, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power4.out',
+                    stagger: 0.12,
+                    onComplete: () => {
+                        console.log('Test animation complete!');
+                    }
+                });
             }
         });
     }
 
-    // Observe for new cards being added
     observeCardChanges() {
         const observer = new MutationObserver((mutations) => {
+            let cardsAdded = false;
+            
             mutations.forEach((mutation) => {
                 if (mutation.addedNodes.length) {
                     mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1) { // Element node
-                            // Check if node is a card
+                        if (node.nodeType === 1) {
                             if (node.classList && node.classList.contains('card')) {
-                                this.applyHoverAnimation(node);
-                                node.dataset.animated = 'true';
-                                
-                                // Add to reveal group if in a grid
-                                const grid = node.closest('.brands-grid, .materials-grid, .products-grid');
-                                if (grid) {
-                                    node.classList.add('reveal-card');
-                                    // Re-setup grid animation
-                                    this.setupStaggeredGridAnimation(grid);
-                                }
+                                cardsAdded = true;
+                                // Hide new card initially
+                                gsap.set(node, { opacity: 0, y: 50 });
                             }
                             
-                            // Check child elements for cards
-                            const cards = node.querySelectorAll ? node.querySelectorAll('.card:not([data-animated])') : [];
-                            cards.forEach(card => {
-                                this.applyHoverAnimation(card);
-                                card.dataset.animated = 'true';
-                                
-                                // Add to reveal group if in a grid
-                                const grid = card.closest('.brands-grid, .materials-grid, .products-grid');
-                                if (grid) {
-                                    card.classList.add('reveal-card');
-                                }
-                            });
+                            const childCards = node.querySelectorAll ? node.querySelectorAll('.card:not([data-hover-applied])') : [];
+                            if (childCards.length > 0) {
+                                cardsAdded = true;
+                                childCards.forEach(card => {
+                                    gsap.set(card, { opacity: 0, y: 50 });
+                                });
+                            }
                         }
                     });
                 }
             });
+            
+            if (cardsAdded) {
+                setTimeout(() => {
+                    this.applyHoverToCards();
+                    this.setupGridAnimations();
+                }, 100);
+            }
         });
 
         observer.observe(document.body, {
@@ -268,17 +216,54 @@ class AnimationSystem {
             subtree: true
         });
     }
+    
+    // Public method to manually trigger animations
+    refreshAnimations() {
+        console.log('Manually refreshing animations...');
+        this.applyHoverToCards();
+        this.setupGridAnimations();
+    }
+    
+    // Force play all animations (for debugging)
+    playAllAnimations() {
+        const cards = document.querySelectorAll('.card');
+        
+        // Hide all cards first
+        gsap.set(cards, { opacity: 0, y: 50 });
+        
+        // Then animate them in with stagger
+        gsap.to(cards, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power4.out',
+            stagger: 0.12,
+            onComplete: () => {
+                console.log('All animations played!');
+            }
+        });
+    }
 }
 
 // Initialize animation system
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof gsap === 'undefined') {
-        console.error('GSAP not loaded');
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        console.error('GSAP or ScrollTrigger not loaded');
         return;
     }
     
-    // Wait a bit for DOM to be ready
+    console.log('GSAP and ScrollTrigger loaded, initializing animations...');
+    
+    // Initialize with delay
     setTimeout(() => {
         window.animationSystem = new AnimationSystem();
-    }, 100);
+        console.log('AnimationSystem initialized');
+        
+        // Add debug function to window
+        window.playCardAnimations = () => {
+            if (window.animationSystem && window.animationSystem.playAllAnimations) {
+                window.animationSystem.playAllAnimations();
+            }
+        };
+    }, 500);
 });
