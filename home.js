@@ -1,4 +1,4 @@
-// js/home.js
+// js/home.js - UPDATED (Animations removed)
 document.addEventListener('DOMContentLoaded', async () => {
     // Wait for supabaseClient to be available
     if (!window.supabaseClient) {
@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (typeof window.removeLoadingStates === 'function') {
             window.removeLoadingStates();
         }
-        
         
     } catch (error) {
         console.error('Error loading data:', error);
@@ -103,8 +102,6 @@ function renderMaterials(materials) {
     });
 }
 
-
-
 function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
@@ -124,43 +121,11 @@ function showError(message) {
         align-items: center;
         gap: 0.5rem;
         z-index: 10000;
-        animation: slideIn 0.3s ease-out;
     `;
     
     document.body.appendChild(errorDiv);
     
     setTimeout(() => {
-        errorDiv.style.animation = 'slideOut 0.3s ease-out forwards';
-        setTimeout(() => errorDiv.remove(), 300);
+        errorDiv.remove();
     }, 5000);
-}
-
-// Add CSS for animations if not already added
-if (!document.querySelector('#error-animations')) {
-    const style = document.createElement('style');
-    style.id = 'error-animations';
-    style.textContent = `
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
 }

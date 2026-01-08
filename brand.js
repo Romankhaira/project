@@ -1,4 +1,4 @@
-// js/brand.js
+// js/brand.js - UPDATED (Animations removed)
 document.addEventListener('DOMContentLoaded', async () => {
     // Get brand ID from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -59,8 +59,6 @@ function renderBrandInfo(brand) {
     `;
 }
 
-// js/brand.js - Add at the end of renderProducts function
-
 async function renderProducts(products) {
     const productsGrid = document.getElementById('products-grid');
     if (!productsGrid) return;
@@ -83,13 +81,6 @@ async function renderProducts(products) {
         const productCard = await createProductCard(product);
         productsGrid.appendChild(productCard);
     }
-    
-    // Notify animation system about new cards
-    setTimeout(() => {
-        if (window.animationSystem && typeof window.animationSystem.setupStaggeredGridAnimations === 'function') {
-            window.animationSystem.setupStaggeredGridAnimations();
-        }
-    }, 200);
 }
 
 async function createProductCard(product) {
@@ -183,13 +174,11 @@ function showError(message) {
         align-items: center;
         gap: 0.5rem;
         z-index: 10000;
-        animation: slideIn 0.3s ease-out;
     `;
     
     document.body.appendChild(errorDiv);
     
     setTimeout(() => {
-        errorDiv.style.animation = 'slideOut 0.3s ease-out forwards';
-        setTimeout(() => errorDiv.remove(), 300);
+        errorDiv.remove();
     }, 5000);
 }

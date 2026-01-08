@@ -1,5 +1,4 @@
-// js/cart.js - Updated class
-
+// js/cart.js - Updated (Animations removed)
 class CartSystem {
     constructor() {
         this.cart = this.loadCart();
@@ -59,9 +58,6 @@ class CartSystem {
         // Save and update UI
         this.saveCart();
         this.updateCartDisplay();
-        
-        // Show success animation
-        this.showAddToCartAnimation();
     }
 
     removeFromCart(productId, color = null) {
@@ -223,7 +219,6 @@ class CartSystem {
         });
     }
 
-    // Rest of the methods remain the same...
     copyCartSummary() {
         const summary = this.generateCartSummary();
         navigator.clipboard.writeText(summary).then(() => {
@@ -240,54 +235,6 @@ class CartSystem {
         return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     }
 
-    showAddToCartAnimation() {
-        // Create floating animation
-        const cartIcon = document.querySelector('.cart-icon-container');
-        if (!cartIcon) return;
-
-        const animation = document.createElement('div');
-        animation.innerHTML = '<i class="fas fa-check"></i>';
-        animation.style.cssText = `
-            position: fixed;
-            background: var(--success);
-            color: var(--bg-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            z-index: 10000;
-            pointer-events: none;
-        `;
-
-        // Get click position or use center
-        const rect = cartIcon.getBoundingClientRect();
-        animation.style.left = rect.left + rect.width / 2 - 20 + 'px';
-        animation.style.top = rect.top + rect.height / 2 - 20 + 'px';
-
-        document.body.appendChild(animation);
-
-        // Animate to cart icon
-        gsap.to(animation, {
-            x: 0,
-            y: 0,
-            scale: 1.2,
-            duration: 0.5,
-            ease: 'back.out(1.7)',
-            onComplete: () => {
-                gsap.to(animation, {
-                    scale: 0,
-                    opacity: 0,
-                    duration: 0.3,
-                    delay: 0.2,
-                    onComplete: () => animation.remove()
-                });
-            }
-        });
-    }
-
     showNotification(message) {
         const notification = document.createElement('div');
         notification.textContent = message;
@@ -300,14 +247,12 @@ class CartSystem {
             padding: 1rem 1.5rem;
             border-radius: 8px;
             z-index: 10000;
-            animation: slideInUp 0.3s ease-out;
         `;
         
         document.body.appendChild(notification);
         
         setTimeout(() => {
-            notification.style.animation = 'slideOutDown 0.3s ease-out forwards';
-            setTimeout(() => notification.remove(), 300);
+            notification.remove();
         }, 3000);
     }
 }

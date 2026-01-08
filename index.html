@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Animated cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -97,146 +92,12 @@
             </div>
         </div>
     </div>
-<!------------------------------------------------------------------------------>
-
-<!-- Add this to index.html before closing </body> -->
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px;">
-    <button onclick="debugAnimations()" style="
-        background: var(--accent-primary);
-        color: var(--bg-primary);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 14px;
-    ">
-        🔧 Debug Animations
-    </button>
     
-    <button onclick="playAnimationsNow()" style="
-        background: var(--accent-secondary);
-        color: var(--bg-primary);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 14px;
-    ">
-        ▶️ Play Animations Now
-    </button>
-    
-    <button onclick="resetAnimations()" style="
-        background: var(--danger);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 14px;
-    ">
-        🔄 Reset Animations
-    </button>
-</div>
-
-<script>
-// Debug function
-function debugAnimations() {
-    console.log('=== DEBUG ANIMATIONS ===');
-    console.log('GSAP loaded:', typeof gsap !== 'undefined');
-    console.log('ScrollTrigger loaded:', typeof ScrollTrigger !== 'undefined');
-    console.log('AnimationSystem:', window.animationSystem);
-    
-    const cards = document.querySelectorAll('.card');
-    console.log('Total cards found:', cards.length);
-    
-    cards.forEach((card, i) => {
-        console.log(`Card ${i}:`, {
-            opacity: getComputedStyle(card).opacity,
-            transform: getComputedStyle(card).transform,
-            hasHover: card.dataset.hoverApplied
-        });
-    });
-    
-    // Show GSAP state
-    const triggers = ScrollTrigger.getAll();
-    console.log('ScrollTriggers:', triggers.length);
-    triggers.forEach(t => console.log('Trigger:', t.trigger, 'start:', t.start, 'end:', t.end));
-}
-
-// Force play animations
-function playAnimationsNow() {
-    console.log('=== PLAYING ANIMATIONS NOW ===');
-    
-    const cards = document.querySelectorAll('.card');
-    console.log(`Animating ${cards.length} cards...`);
-    
-    // Hide cards first
-    gsap.to(cards, {
-        opacity: 0,
-        y: 50,
-        duration: 0.5,
-        onComplete: () => {
-            console.log('Cards hidden, now revealing...');
-            
-            // Reveal with stagger
-            gsap.to(cards, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power4.out',
-                stagger: 0.12,
-                onComplete: () => {
-                    console.log('✅ Animations complete!');
-                    alert('✅ Animations played successfully! Check console.');
-                }
-            });
-        }
-    });
-}
-
-// Reset animations
-function resetAnimations() {
-    console.log('=== RESETTING ANIMATIONS ===');
-    
-    // Kill all ScrollTriggers
-    ScrollTrigger.getAll().forEach(t => t.kill());
-    
-    // Reset cards to initial state
-    const cards = document.querySelectorAll('.card');
-    gsap.set(cards, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        clearProps: "all"
-    });
-    
-    // Remove hover markers
-    cards.forEach(card => {
-        delete card.dataset.hoverApplied;
-    });
-    
-    // Reinitialize animations
-    if (window.animationSystem && window.animationSystem.refreshAnimations) {
-        window.animationSystem.refreshAnimations();
-        console.log('✅ Animations reset and reinitialized');
-        alert('✅ Animations reset! Now scroll to see them.');
-    } else {
-        alert('❌ AnimationSystem not found');
-    }
-}
-</script>
-
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
-    <script src="js/animations.js"></script>
+    <script src="js/animations.js"></script> <!-- Now points to the stub file -->
     <script src="js/home.js"></script>
 </body>
 </html>
