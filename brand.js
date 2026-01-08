@@ -59,6 +59,8 @@ function renderBrandInfo(brand) {
     `;
 }
 
+// js/brand.js - Add at the end of renderProducts function
+
 async function renderProducts(products) {
     const productsGrid = document.getElementById('products-grid');
     if (!productsGrid) return;
@@ -75,14 +77,19 @@ async function renderProducts(products) {
         return;
     }
 
-    // Clear loading state
     productsGrid.innerHTML = '';
     
-    // Process each product
     for (const product of products) {
         const productCard = await createProductCard(product);
         productsGrid.appendChild(productCard);
     }
+    
+    // Notify animation system about new cards
+    setTimeout(() => {
+        if (window.animationSystem && typeof window.animationSystem.setupStaggeredGridAnimations === 'function') {
+            window.animationSystem.setupStaggeredGridAnimations();
+        }
+    }, 200);
 }
 
 async function createProductCard(product) {

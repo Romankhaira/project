@@ -235,7 +235,7 @@ class CartSystem {
 
     generateWhatsAppMessage() {
         const summary = this.generateCartSummary();
-        const phoneNumber = '+1234567890'; // Replace with actual number
+        const phoneNumber = '+33695225960'; // Replace with actual number
         const encodedMessage = encodeURIComponent(summary + '\n\nI want to order these products.');
         return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     }
