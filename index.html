@@ -3,101 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PEINTURE LAND</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>PEINTURE LAND - Professional Paint Suppliers</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="background-pattern.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-text">PEINTURE</span><span class="logo-accent"> LAND</span>
-            </a>
-            <div class="nav-links">
-                <a href="index.html#brands" class="nav-link">Brands</a>
-                <a href="index.html#materials" class="nav-link">Materials</a>
-                <div class="cart-icon-container">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
+    <div class="paint-splatter-bg"></div>
+    <div class="floating-paint-dots"></div>
+
+    <!-- Header -->
+    <header class="header animate-gradient-shift">
+        <div class="container">
+            <div class="logo-container">
+                <img src="logo.png" alt="PEINTURE LAND Logo" class="logo animate-float">
+                <h1 class="animate-fade-in">PEINTURE LAND</h1>
             </div>
+            <nav class="nav">
+                <a href="index.html" class="active animate-fade-in-left">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="cart.html" class="cart-link animate-fade-in-right">
+                    <i class="fas fa-shopping-cart"></i> Cart 
+                    <span class="cart-count">0</span>
+                </a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="title-line">PROFESSIONAL PAINTS</span>
-                <span class="title-line">AND COATING</span>
-                <span class="title-accent">SOLUTION</span>
-            </h1>
-            <p class="hero-subtitle">Premium Paint and Building Material Store</p>
-            <div class="hero-cta">
-                <a href="#brands" class="btn btn-primary">Explore Brands</a>
-                <a href="#materials" class="btn btn-secondary">View Tools</a>
-            </div>
-        </div>
-        <div class="hero-visual">
-            <div class="paint-canister" id="canister-1"></div>
-            <div class="paint-canister" id="canister-2"></div>
-            <div class="paint-canister" id="canister-3"></div>
+    <section class="hero animate-fade-in">
+        <div class="container">
+            <h2 class="animate-fade-in-up">Professional Paint & Coating Solutions</h2>
+            <p class="animate-fade-in-up" style="animation-delay: 0.2s">
+                Premium Paint and Building Material Store
+            </p>
         </div>
     </section>
 
     <!-- Brands Section -->
-    <section id="brands" class="section brands-section">
-        <div class="section-header">
-            <h2 class="section-title">Professional <span class="accent">Brands</span></h2>
-            <p class="section-subtitle">Select from industry-leading coating manufacturers</p>
-        </div>
-        <div class="brands-grid" id="brands-grid">
-            <!-- Brands will be loaded here -->
+    <section class="brands-section">
+        <div class="container">
+            <div class="section-title-wrapper">
+                <h2 class="animate-fade-in-up">BRANDS</h2>
+            </div>
+            <div class="brands-grid stagger-animation" id="brandsGrid">
+                <div class="loading">Loading brands...</div>
+            </div>
         </div>
     </section>
-
+    
     <!-- Materials Section -->
-    <section id="materials" class="section materials-section">
-        <div class="section-header">
-            <h2 class="section-title">Application <span class="accent">Tools</span></h2>
-            <p class="section-subtitle">Premium tools for perfect application</p>
-        </div>
-        <div class="materials-grid" id="materials-grid">
-            <!-- Materials will be loaded here -->
+    <section class="materials-section">
+        <div class="container">
+            <div class="section-title-wrapper">
+                <h2 class="animate-fade-in-up">MATERIALS</h2>
+            </div>
+            <div class="materials-grid stagger-animation" id="materialsGrid">
+                <div class="loading">Loading materials...</div>
+            </div>
         </div>
     </section>
 
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-modal-content">
-            <div class="cart-header">
-                <h3>Your Cart</h3>
-                <button class="close-cart">&times;</button>
-            </div>
-            <div class="cart-items" id="cart-items">
-                <!-- Cart items loaded here -->
-            </div>
-            <div class="cart-summary">
-                <div class="summary-text" id="cart-summary-text"></div>
-                <div class="cart-actions">
-                    <button class="btn btn-secondary" id="copy-cart">Copy Summary</button>
-                    <button class="btn btn-primary" id="whatsapp-order">
-                        <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                    </button>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="logo.png" alt="PEINTURE LAND" class="footer-logo-img">
+                        <h3>PEINTURE LAND</h3>
+                    </div>
+                    <p class="footer-tagline">Professional Paint & Coating Solutions</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-map-marker-alt"></i> Our Location</h4>
+                    <div class="footer-address">
+                        <div class="address-line">
+                            <i class="fas fa-building"></i>
+                            <span>39 Boulevard De La Muette</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-map-pin"></i>
+                            <span>95140 Garges-Les-Gonesse</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-flag"></i>
+                            <span>France</span>
+                        </div>
+                        <a href="https://maps.app.goo.gl/NYagqXvvNyLMVX4o8" 
+                           class="map-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-phone"></i> Contact Us</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> 06.95.22.59.60</p>
+                        <p><i class="fas fa-phone"></i> 07.86.02.96.89</p>
+                        <p><i class="fas fa-envelope"></i> sarlpeintureland@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-clock"></i> Business Hours</h4>
+                    <div class="footer-hours">
+                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                        <p><strong>Saturday:</strong> 9:00 AM - 1:00 PM</p>
+                        <p><strong>Sunday:</strong> Closed</p>
+                    </div>
                 </div>
             </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PEINTURE LAND. All rights reserved.</p>
+                <p class="footer-legal">Professional Paint Suppliers | SIRET: 931 329 395 00012</p>
+            </div>
         </div>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/animations.js"></script> <!-- Now points to the stub file -->
-    <script src="js/home.js"></script>
+    </footer>
+
+    <script src="animations.js"></script>
+    <script src="logo-loader.js"></script>
+    <script src="paint-mixer.js"></script>
+    <script src="supabase-client.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="script.js"></script>
+
+    <style>
+        /* Footer Address Styles */
+        .footer-address {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .address-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .address-line:last-child {
+            border-bottom: none;
+        }
+
+        .address-line:hover {
+            transform: translateX(5px);
+            border-bottom-color: rgba(79, 172, 254, 0.5);
+        }
+
+        .address-line i {
+            color: #4facfe;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            margin-top: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .address-line:hover i {
+            transform: scale(1.2);
+            color: #00f2fe;
+        }
+
+        .address-line span {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .map-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        }
+
+        .map-link i {
+            font-size: 1rem;
+        }
+
+        /* Footer general styles for consistency */
+        .footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #f093fb, #f5576c);
+            background-size: 300% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-column h4 i {
+            color: #4facfe;
+        }
+
+        .footer-contact p,
+        .footer-hours p {
+            color: #b0b0b0;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .footer-contact i,
+        .footer-hours i {
+            color: #4facfe;
+            width: 20px;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .footer-legal {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* MINIMALIST ELEGANT HOVER - BEST PERFORMANCE */
+        .brand-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .brand-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #f093fb);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.12),
+                0 4px 8px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        .brand-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .brand-card:hover .brand-image {
+            transform: scale(1.08);
+            filter: brightness(1.05);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .brand-card .brand-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-card:hover .brand-info::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(79, 172, 254, 0.05), transparent);
+            z-index: -1;
+        }
+
+        .brand-card:hover .brand-name {
+            color: #4facfe;
+            transform: translateY(-2px);
+            display: inline-block;
+        }
+
+        .brand-card:hover .brand-description {
+            color: #666;
+            transform: translateY(-2px);
+        }
+
+        .brand-card:hover .view-products {
+            color: #4facfe;
+            transform: translateX(8px);
+            font-weight: 600;
+        }
+
+        .brand-card:hover .view-products i {
+            animation: gentleSwing 1s ease-in-out infinite;
+        }
+
+        @keyframes gentleSwing {
+            0%, 100% { transform: translateX(0) rotate(0); }
+            25% { transform: translateX(3px) rotate(10deg); }
+            75% { transform: translateX(3px) rotate(-10deg); }
+        }
+    </style>
+
 </body>
 </html>

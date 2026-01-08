@@ -3,67 +3,1132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Material Details | Chromatix</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>Material Details - PEINTURE LAND</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="background-pattern.css">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-text">PEINTURE</span><span class="logo-accent"> LAND</span>
-            </a>
-            <div class="nav-links">
-                <a href="index.html#brands" class="nav-link">Brands</a>
-                <a href="index.html#materials" class="nav-link">Materials</a>
-                <div class="cart-icon-container">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
+    <!-- Background Patterns -->
+    <div class="paint-splatter-bg"></div>
+    <div class="floating-paint-dots"></div>
+
+    <!-- Header (Same as index.html) -->
+    <header class="header animate-gradient-shift">
+        <div class="container">
+            <div class="logo-container">
+                <img src="logo.png" alt="PEINTURE LAND Logo" class="logo animate-float">
+                <h1 class="animate-fade-in">PEINTURE LAND</h1>
             </div>
+            <nav class="nav">
+                <a href="index.html" class="animate-fade-in-left">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="cart.html" class="cart-link animate-fade-in-right">
+                    <i class="fas fa-shopping-cart"></i> Cart 
+                    <span class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <div class="container">
+            <a href="index.html" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html#materials-section" class="breadcrumb-link">Materials</a>
+            <span class="breadcrumb-separator">›</span>
+            <span id="breadcrumb-material" class="breadcrumb-current" aria-current="page">Loading...</span>
         </div>
     </nav>
 
-    <!-- Material Detail -->
-    <section class="material-detail">
+    <!-- Material Detail Section -->
+    <section class="material-detail-section">
         <div class="container">
-            <div class="material-content" id="material-content">
-                <!-- Material info loaded here -->
+            <div id="material-detail-container" class="animate-fade-in-up" aria-busy="true">
+                <!-- Loading skeleton will be inserted here -->
+                <div class="material-skeleton skeleton" role="status" aria-label="Loading material details">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-controls">
+                            <div class="skeleton-button"></div>
+                            <div class="skeleton-button"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-modal-content">
-            <div class="cart-header">
-                <h3>Your Cart</h3>
-                <button class="close-cart">&times;</button>
-            </div>
-            <div class="cart-items" id="cart-items">
-                <!-- Cart items loaded here -->
-            </div>
-            <div class="cart-summary">
-                <div class="summary-text" id="cart-summary-text"></div>
-                <div class="cart-actions">
-                    <button class="btn btn-secondary" id="copy-cart">Copy Summary</button>
-                    <button class="btn btn-primary" id="whatsapp-order">
-                        <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                    </button>
-                </div>
+    <!-- Related Materials Section -->
+    <section class="related-materials-section">
+        <div class="container">
+            <h2 class="section-title animate-fade-in-up">Related Materials</h2>
+            <div id="related-materials-container" class="related-grid stagger-animation" aria-busy="true" aria-label="Loading related materials">
+                <!-- Related materials will be injected here -->
+                <div class="loading">Loading related materials...</div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/animations.js"></script> <!-- Now points to the stub file -->
-    <script src="js/material.js"></script>
+    <!-- Footer (Same as index.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="logo.png" alt="PEINTURE LAND" class="footer-logo-img">
+                        <h3>PEINTURE LAND</h3>
+                    </div>
+                    <p class="footer-tagline">Professional Paint & Coating Solutions</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-map-marker-alt"></i> Our Location</h4>
+                    <div class="footer-address">
+                        <div class="address-line">
+                            <i class="fas fa-building"></i>
+                            <span>39 Boulevard De La Muette</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-map-pin"></i>
+                            <span>95140 Garges-Les-Gonesse</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-flag"></i>
+                            <span>France</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=39+Boulevard+De+La+Muette,95140+Garges-Les-Gonesse,France" 
+                           class="map-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-phone"></i> Contact Us</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> 06.95.22.59.60</p>
+                        <p><i class="fas fa-phone"></i> 07.86.02.96.89</p>
+                        <p><i class="fas fa-envelope"></i> sarlpeintureland@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-clock"></i> Business Hours</h4>
+                    <div class="footer-hours">
+                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                        <p><strong>Saturday:</strong> 9:00 AM - 1:00 PM</p>
+                        <p><strong>Sunday:</strong> Closed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PEINTURE LAND. All rights reserved.</p>
+                <p class="footer-legal">Professional Paint Suppliers | SIRET: 931 329 395 00012</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="animations.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Material Page Specific JavaScript -->
+    <script>
+        // Material Page Configuration
+        const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1545972154-9bb223aac798?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80';
+        
+        // Material Page Specific Functions
+        class MaterialPage {
+            constructor() {
+                // Load credentials from environment variables or global config
+                this.supabaseUrl = window.SUPABASE_URL || '';
+                this.supabaseKey = window.SUPABASE_ANON_KEY || '';
+                this.supabase = null;
+                this.materialId = null;
+                
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    // Validate credentials are configured. If no URL/key provided,
+                    // allow continuing when an existing Supabase client is already available on window.
+                    if ((!this.supabaseUrl || !this.supabaseKey) && !window.supabaseClient && !(window.supabase && window.supabase.createClient)) {
+                        this.showError('network', '🌐⚡ Configuration error. Please contact support.');
+                        return;
+                    }
+                    
+                    // Get material ID from URL
+                    this.materialId = this.getMaterialIdFromUrl();
+                    
+                    if (!this.materialId) {
+                        this.showError('missing_id', '⚠️ No material selected! Pick a material to see its details.');
+                        return;
+                    }
+                    
+                    // Initialize Supabase
+                    await this.initializeSupabase();
+                    
+                    // Load material and related materials
+                    await this.loadMaterial();
+                    await this.loadRelatedMaterials();
+                    
+                    // Update cart count
+                    this.updateCartCount();
+                    
+                    // Initialize animations
+                    this.initializeAnimations();
+                    
+                } catch (error) {
+                    console.error('Material page initialization error:', error);
+                    this.showError('network', '🌐⚡ Unable to load material! Please check your connection or try again.');
+                }
+            }
+            
+            getMaterialIdFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('id');
+            }
+            
+            async initializeSupabase() {
+                return new Promise((resolve, reject) => {
+                    if (window.supabaseClient) {
+                        this.supabase = window.supabaseClient;
+                        resolve();
+                    } else if (window.supabase && window.supabase.createClient) {
+                        this.supabase = window.supabase.createClient(this.supabaseUrl, this.supabaseKey);
+                        resolve();
+                    } else {
+                        // Load Supabase from CDN
+                        const script = document.createElement('script');
+                        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                        script.onload = () => {
+                            this.supabase = window.supabase.createClient(this.supabaseUrl, this.supabaseKey);
+                            resolve();
+                        };
+                        script.onerror = () => reject(new Error('Failed to load Supabase'));
+                        document.head.appendChild(script);
+                    }
+                });
+            }
+            
+            async loadMaterial() {
+                try {
+                    const { data: material, error } = await this.supabase
+                        .from('materials')
+                        .select('*')
+                        .eq('id', this.materialId)
+                        .single();
+                    
+                    if (error) throw error;
+                    if (!material) throw new Error('Material not found');
+                    
+                    this.renderMaterial(material);
+                    
+                } catch (error) {
+                    console.error('Error loading material:', error);
+                    this.showError('not_found', '❌ Material not found! This item may have been removed.');
+                }
+            }
+            
+            async loadRelatedMaterials() {
+                try {
+                    const { data: materials, error } = await this.supabase
+                        .from('materials')
+                        .select('*')
+                        .neq('id', this.materialId)
+                        .limit(4);
+                    
+                    if (error) throw error;
+                    
+                    this.renderRelatedMaterials(materials || []);
+                    
+                } catch (error) {
+                    console.error('Error loading related materials:', error);
+                    // Don't show error for related materials, just show empty state
+                    this.renderRelatedMaterials([]);
+                }
+            }
+            
+            renderMaterial(material) {
+                // Sanitize material data to prevent XSS
+                const sanitizedName = this.sanitizeHTML(material.name);
+                const sanitizedDescription = this.sanitizeHTML(material.description || 'No description available.');
+                const sanitizedImageUrl = this.sanitizeURL(material.image_url || DEFAULT_IMAGE);
+                
+                // Update breadcrumb and page title
+                document.getElementById('breadcrumb-material').textContent = sanitizedName;
+                document.title = `${sanitizedName} - PEINTURE LAND`;
+                
+                // Update the main content
+                const container = document.getElementById('material-detail-container');
+                container.setAttribute('aria-busy', 'false');
+                
+                container.innerHTML = `
+                    <div class="material-detail-card animate-fade-in-scale">
+                        <div class="material-image-container">
+                            <img src="${sanitizedImageUrl}" 
+                                 alt="${sanitizedName}" 
+                                 class="material-image"
+                                 onerror="this.src='${this.sanitizeURL(DEFAULT_IMAGE)}'">
+                        </div>
+                        <div class="material-content">
+                            <h1 class="material-title">${sanitizedName}</h1>
+                            <p class="material-description">${sanitizedDescription}</p>
+                            
+                            <div class="cart-controls">
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn decrease-btn" onclick="materialPage.decreaseQuantity()" 
+                                            aria-label="Decrease quantity" id="decrease-btn">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" 
+                                           class="quantity-input" 
+                                           id="quantity-input"
+                                           value="1" 
+                                           min="1" 
+                                           onchange="materialPage.validateQuantity(this.value)"
+                                           aria-label="Quantity">
+                                    <button class="quantity-btn increase-btn" onclick="materialPage.increaseQuantity()" 
+                                            aria-label="Increase quantity" id="increase-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <button class="add-to-cart-btn" onclick="materialPage.addToCart('${material.id}')" 
+                                        id="add-to-cart-btn" aria-label="Add ${material.name} to cart">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Initialize quantity controls
+                this.validateQuantity(1);
+                
+                // Setup image lazy loading
+                this.setupLazyLoading();
+            }
+            
+            renderRelatedMaterials(materials) {
+                const container = document.getElementById('related-materials-container');
+                container.setAttribute('aria-busy', 'false');
+                
+                if (!materials || materials.length === 0) {
+                    container.innerHTML = '<p class="no-related-materials">No related materials found.</p>';
+                    return;
+                }
+                
+                container.innerHTML = materials.map((material, index) => {
+                    const sanitizedName = this.sanitizeHTML(material.name);
+                    const sanitizedDescription = this.sanitizeHTML(material.description || 'High-quality painting material');
+                    const sanitizedImageUrl = this.sanitizeURL(material.image_url || DEFAULT_IMAGE);
+                    const displayDescription = sanitizedDescription.length > 100 ? sanitizedDescription.substring(0, 100) + '...' : sanitizedDescription;
+                    
+                    return `
+                    <a href="material.html?id=${this.sanitizeHTML(material.id)}" class="material-card" style="--card-index: ${index};">
+                        <div class="material-info">
+                            <img src="${sanitizedImageUrl}" 
+                                 alt="${sanitizedName}" 
+                                 class="material-image"
+                                 onerror="this.src='${this.sanitizeURL(DEFAULT_IMAGE)}'">
+                            <h3 class="material-name">${sanitizedName}</h3>
+                            <p class="material-description">${displayDescription}</p>
+                            <div class="view-materials">
+                                View Details <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                    `;
+                }).join('');
+
+                // Setup image lazy loading for related materials
+                this.setupLazyLoading();
+            }
+            
+            showError(type, message) {
+                const container = document.getElementById('material-detail-container');
+                container.setAttribute('aria-busy', 'false');
+                
+                let alertClass = '';
+                let icon = '';
+                
+                switch(type) {
+                    case 'missing_id':
+                        alertClass = 'alert-warning';
+                        icon = '<i class="fas fa-exclamation-triangle"></i>';
+                        break;
+                    case 'not_found':
+                        alertClass = 'alert-error';
+                        icon = '<i class="fas fa-times-circle"></i>';
+                        break;
+                    case 'network':
+                        alertClass = 'alert-network';
+                        icon = '<i class="fas fa-wifi"></i>';
+                        break;
+                }
+                
+                container.innerHTML = `
+                    <div class="alert ${alertClass}" role="alert">
+                        ${icon}
+                        <span>${message}</span>
+                        <a href="materials.html" class="btn-back">Browse All Materials</a>
+                    </div>
+                `;
+            }
+            
+            // Quantity Control Methods
+            increaseQuantity() {
+                const input = document.getElementById('quantity-input');
+                const currentValue = parseInt(input.value) || 1;
+                input.value = currentValue + 1;
+                this.validateQuantity(input.value);
+            }
+            
+            decreaseQuantity() {
+                const input = document.getElementById('quantity-input');
+                const currentValue = parseInt(input.value) || 1;
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                    this.validateQuantity(input.value);
+                }
+            }
+            
+            validateQuantity(value) {
+                const input = document.getElementById('quantity-input');
+                const decreaseBtn = document.getElementById('decrease-btn');
+                const numValue = parseInt(value);
+                
+                if (isNaN(numValue) || numValue < 1) {
+                    input.value = 1;
+                } else {
+                    input.value = numValue;
+                }
+                
+                if (decreaseBtn) {
+                    decreaseBtn.disabled = parseInt(input.value) <= 1;
+                    decreaseBtn.setAttribute('aria-disabled', parseInt(input.value) <= 1);
+                }
+            }
+            
+            // Cart Methods
+            async addToCart(materialId) {
+                const materialName = document.querySelector('.material-title')?.textContent;
+                const materialDescription = document.querySelector('.material-description')?.textContent;
+                const materialImage = document.querySelector('.material-image')?.src || DEFAULT_IMAGE;
+                const quantity = parseInt(document.getElementById('quantity-input')?.value) || 1;
+                
+                if (!materialName) {
+                    console.error('Material name not found');
+                    return;
+                }
+                
+                // Create material object for cart
+                const material = {
+                    id: materialId,
+                    name: materialName,
+                    description: materialDescription,
+                    image_url: materialImage
+                };
+                
+                // Use existing cart manager if available
+                if (window.cartManager) {
+                    window.cartManager.addItem(material, quantity);
+                    this.showCartSuccess(materialName);
+                } else {
+                    // Fallback to localStorage
+                    this.addToCartFallback(material, quantity);
+                }
+            }
+            
+            addToCartFallback(material, quantity) {
+                try {
+                    const cart = JSON.parse(localStorage.getItem('peintureLandCart')) || [];
+                    const existingItemIndex = cart.findIndex(item => item.id === material.id);
+                    
+                    if (existingItemIndex > -1) {
+                        cart[existingItemIndex].quantity += quantity;
+                    } else {
+                        cart.push({
+                            ...material,
+                            quantity: quantity
+                        });
+                    }
+                    
+                    localStorage.setItem('peintureLandCart', JSON.stringify(cart));
+                    this.updateCartCount();
+                    this.showCartSuccess(material.name);
+                    
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                    this.showError('network', 'Failed to add item to cart. Please try again.');
+                }
+            }
+            
+            updateCartCount() {
+                if (window.cartManager) {
+                    window.cartManager.updateCartCount();
+                } else {
+                    // Fallback to update cart count manually
+                    const cart = JSON.parse(localStorage.getItem('peintureLandCart')) || [];
+                    const cartCount = cart.reduce((total, item) => total + (item.quantity || 0), 0);
+                    document.querySelectorAll('.cart-count').forEach(element => {
+                        element.textContent = cartCount;
+                    });
+                }
+            }
+            
+            showCartSuccess(materialName) {
+                const addBtn = document.getElementById('add-to-cart-btn');
+                if (!addBtn) return;
+                
+                const originalText = addBtn.innerHTML;
+                const originalAriaLabel = addBtn.getAttribute('aria-label');
+                
+                // Update button state
+                addBtn.innerHTML = '<i class="fas fa-check"></i> Added to Cart!';
+                addBtn.setAttribute('aria-label', `${materialName} added to cart`);
+                addBtn.classList.add('animate-button-success');
+                
+                // Trigger cart animation
+                if (window.animationsManager) {
+                    window.animationsManager.initCartAnimations();
+                }
+                
+                // Show notification if cart manager is available
+                if (window.cartManager) {
+                    window.cartManager.showNotification(`${materialName} added to cart`);
+                }
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    addBtn.innerHTML = originalText;
+                    addBtn.setAttribute('aria-label', originalAriaLabel);
+                    addBtn.classList.remove('animate-button-success');
+                }, 2000);
+            }
+            
+            // Sanitization Methods
+            sanitizeHTML(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+            
+            sanitizeURL(url) {
+                try {
+                    const urlObj = new URL(url, window.location.origin);
+                    // Only allow http, https, and data protocols
+                    if (!['http:', 'https:', 'data:'].includes(urlObj.protocol)) {
+                        return DEFAULT_IMAGE;
+                    }
+                    return urlObj.toString();
+                } catch {
+                    return DEFAULT_IMAGE;
+                }
+            }
+            
+            // Utility Methods
+            setupLazyLoading() {
+                const lazyImages = document.querySelectorAll('img.material-image');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.classList.add('loaded');
+                            observer.unobserve(img);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                lazyImages.forEach(img => observer.observe(img));
+            }
+            
+            initializeAnimations() {
+                // Remove loading states
+                document.querySelectorAll('[aria-busy="true"]').forEach(el => {
+                    el.removeAttribute('aria-busy');
+                });
+                
+                // Initialize any additional animations
+                if (window.animationsManager) {
+                    window.animationsManager.initHoverEffects();
+                    window.animationsManager.addRevealClasses();
+                }
+            }
+        }
+        
+        // Initialize material page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.materialPage = new MaterialPage();
+        });
+    </script>
+
+    <!-- Material Page Specific CSS -->
+    <style>
+        /* Breadcrumbs */
+        .breadcrumbs {
+            background: white;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+        
+        .breadcrumbs .container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .breadcrumb-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb-link:hover {
+            color: var(--deep-purple);
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-separator {
+            color: #adb5bd;
+            font-size: 0.8rem;
+        }
+        
+        .breadcrumb-current {
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Material Detail Section */
+        .material-detail-section {
+            padding: 40px 0;
+        }
+        
+        .material-detail-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .material-detail-card {
+                flex-direction: row;
+                max-height: 500px;
+            }
+        }
+        
+        .material-image-container {
+            flex: 1;
+            min-height: 300px;
+            overflow: hidden;
+        }
+        
+        .material-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .material-image-container img.loaded {
+            opacity: 1;
+        }
+        
+        .material-image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .material-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .material-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .material-description {
+            font-size: 1.1rem;
+            color: #636e72;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+        
+        /* Cart Controls */
+        .cart-controls {
+            margin-top: auto;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quantity-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .quantity-btn:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #adb5bd;
+            color: #adb5bd;
+        }
+        
+        .quantity-input {
+            width: 70px;
+            height: 45px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--deep-purple));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+        }
+        
+        .add-to-cart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+        
+        .add-to-cart-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Related Materials Section */
+        .related-materials-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+            margin-top: 40px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #2d3436;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .no-related-materials {
+            text-align: center;
+            color: #636e72;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+            padding: 40px 0;
+        }
+        
+        /* Loading Skeleton */
+        .material-skeleton {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .material-skeleton {
+                flex-direction: row;
+                max-height: 500px;
+            }
+        }
+        
+        .skeleton-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        .skeleton-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .skeleton-title {
+            height: 40px;
+            width: 70%;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .skeleton-text {
+            height: 20px;
+            width: 90%;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        
+        .skeleton-text:nth-child(3) {
+            width: 80%;
+        }
+        
+        .skeleton-controls {
+            margin-top: auto;
+            padding-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .skeleton-button {
+            height: 45px;
+            flex: 1;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 50px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Error Alerts */
+        .alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        .alert i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .alert span {
+            font-size: 1.2rem;
+            color: #495057;
+            display: block;
+            margin-bottom: 20px;
+        }
+        
+        .alert-warning i {
+            color: #ffc107;
+        }
+        
+        .alert-error i {
+            color: #dc3545;
+        }
+        
+        .alert-network i {
+            color: #17a2b8;
+        }
+        
+        .btn-back {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+        
+        /* Focus States for Accessibility */
+        .quantity-btn:focus-visible,
+        .add-to-cart-btn:focus-visible,
+        .breadcrumb-link:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        .quantity-input:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .material-title {
+                font-size: 1.8rem;
+            }
+            
+            .material-content {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .related-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .material-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quantity-selector {
+                justify-content: center;
+            }
+        }
+        
+        /* Footer Address Styles */
+        .footer-address {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .address-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .address-line:last-child {
+            border-bottom: none;
+        }
+
+        .address-line:hover {
+            transform: translateX(5px);
+            border-bottom-color: rgba(79, 172, 254, 0.5);
+        }
+
+        .address-line i {
+            color: #4facfe;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            margin-top: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .address-line:hover i {
+            transform: scale(1.2);
+            color: #00f2fe;
+        }
+
+        .address-line span {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .map-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        }
+
+        .map-link i {
+            font-size: 1rem;
+        }
+
+        /* Footer general styles for consistency */
+        .footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #f093fb, #f5576c);
+            background-size: 300% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-column h4 i {
+            color: #4facfe;
+        }
+
+        .footer-contact p,
+        .footer-hours p {
+            color: #b0b0b0;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i,
+        .footer-hours i {
+            color: #4facfe;
+            width: 20px;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .footer-legal {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
 </body>
 </html>

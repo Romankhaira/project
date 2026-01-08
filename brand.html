@@ -3,80 +3,919 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Products | PRINTURE LAND</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>Brand Products - PEINTURE LAND</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="background-pattern.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-text">PEINTURE</span><span class="logo-accent"> LAND</span>
-            </a>
-            <div class="nav-links">
-                <a href="index.html#brands" class="nav-link">Brands</a>
-                <a href="index.html#materials" class="nav-link">Materials</a>
-                <div class="cart-icon-container">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
+    <div class="paint-splatter-bg"></div>
+    <div class="floating-paint-dots"></div>
+
+    <!-- Header -->
+    <header class="header animate-gradient-shift">
+        <div class="container">
+            <div class="logo-container">
+                <img src="logo.png" alt="PEINTURE LAND Logo" class="logo animate-float">
+                <h1 class="animate-fade-in">PEINTURE LAND</h1>
             </div>
+            <nav class="nav">
+                <a href="index.html" class="animate-fade-in-left">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="cart.html" class="cart-link animate-fade-in-right">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="cart-count">0</span>
+                </a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Brand Header -->
-    <section class="brand-header">
+    <section class="brand-header animate-gradient-shift">
         <div class="container">
-            <div class="brand-info" id="brand-info">
-                <!-- Brand info loaded here -->
+            <div class="breadcrumb animate-fade-in-left">
+                <a href="index.html">Home</a> <i class="fas fa-chevron-right"></i>
+                <span id="brandName">Brand</span>
             </div>
-        </div>
-    </section>
-
-    <!-- Products Grid -->
-    <section class="section products-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Available <span class="accent">Products</span></h2>
-                <p class="section-subtitle" id="product-count">Loading products...</p>
-            </div>
-            <div class="products-grid" id="products-grid">
-                <!-- Products will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-modal-content">
-            <div class="cart-header">
-                <h3>Your Cart</h3>
-                <button class="close-cart">&times;</button>
-            </div>
-            <div class="cart-items" id="cart-items">
-                <!-- Cart items loaded here -->
-            </div>
-            <div class="cart-summary">
-                <div class="summary-text" id="cart-summary-text"></div>
-                <div class="cart-actions">
-                    <button class="btn btn-secondary" id="copy-cart">Copy Summary</button>
-                    <button class="btn btn-primary" id="whatsapp-order">
-                        <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                    </button>
+            <div class="brand-info animate-fade-in-up" id="brandInfo">
+                <!-- Brand info loaded dynamically -->
+                <div class="loading-brand">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/animations.js"></script> <!-- Now points to the stub file -->
-    <script src="js/brand.js"></script>
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title animate-fade-in-up">Products</h2>
+            <div class="brand-products" id="productsGrid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading products...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="logo.png" alt="PEINTURE LAND" class="footer-logo-img">
+                        <h3>PEINTURE LAND</h3>
+                    </div>
+                    <p class="footer-tagline">Professional Paint & Coating Solutions</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-map-marker-alt"></i> Our Location</h4>
+                    <div class="footer-address">
+                        <div class="address-line">
+                            <i class="fas fa-building"></i>
+                            <span>39 Boulevard De La Muette</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-map-pin"></i>
+                            <span>95140 Garges-Les-Gonesse</span>
+                        </div>
+                        <div class="address-line">
+                            <i class="fas fa-flag"></i>
+                            <span>France</span>
+                        </div>
+                        <a href="https://maps.google.com/?q=39+Boulevard+De+La+Muette,95140+Garges-Les-Gonesse,France" 
+                           class="map-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-phone"></i> Contact Us</h4>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone"></i> 06.95.22.59.60</p>
+                        <p><i class="fas fa-phone"></i> 07.86.02.96.89</p>
+                        <p><i class="fas fa-envelope"></i> sarlpeintureland@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4><i class="fas fa-clock"></i> Business Hours</h4>
+                    <div class="footer-hours">
+                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                        <p><strong>Saturday:</strong> 9:00 AM - 1:00 PM</p>
+                        <p><strong>Sunday:</strong> Closed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PEINTURE LAND. All rights reserved.</p>
+                <p class="footer-legal">Professional Paint Suppliers | SIRET: 931 329 395 00012</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="animations.js"></script>
+    <script src="logo-loader.js"></script>
+    <script src="paint-mixer.js"></script>
+    <script src="supabase-client.js"></script>
+    <script src="cart-manager.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Brand page specific JavaScript
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Brand page loaded');
+            
+            // Get brand ID from URL
+            const brandId = getBrandIdFromURL();
+            
+            if (brandId) {
+                await ensureSupabase();
+                await loadBrandAndProducts(brandId);
+            } else {
+                console.error('No valid brand ID found in URL');
+                window.location.href = 'index.html';
+            }
+            
+            // Initialize cart count
+            updateCartCount();
+        });
+        
+        function getBrandIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const brandId = urlParams.get('id');
+            console.log('Brand ID from URL:', brandId);
+            return brandId;
+        }
+        
+        async function loadBrandAndProducts(brandId) {
+            try {
+                console.log('Loading brand with ID:', brandId);
+                
+                const { data: brand, error: brandError } = await window.supabaseClient
+                    .from('brands')
+                    .select('*')
+                    .eq('id', brandId)
+                    .single();
+                
+                if (brandError) throw brandError;
+                
+                console.log('Brand loaded:', brand);
+                
+                // Update page title and brand name
+                document.title = `${brand.name} Products - PEINTURE LAND`;
+                document.getElementById('brandName').textContent = brand.name;
+                
+                // Update brand info section
+                const brandInfoDiv = document.getElementById('brandInfo');
+                brandInfoDiv.innerHTML = '';
+                
+                const heading = document.createElement('h2');
+                heading.textContent = brand.name;
+                
+                const paragraph = document.createElement('p');
+                paragraph.textContent = brand.description;
+                
+                brandInfoDiv.appendChild(heading);
+                brandInfoDiv.appendChild(paragraph);
+                
+                // Load products for this brand
+                await loadBrandProducts(brandId, brand.name);
+                
+            } catch (error) {
+                console.error('Error loading brand:', error);
+                document.getElementById('brandInfo').innerHTML = 
+                    `<div class="error">Error loading brand</div>`;
+                document.getElementById('productsGrid').innerHTML = 
+                    `<div class="error">Error loading products</div>`;
+            }
+        }
+        
+        async function loadBrandProducts(brandId, brandName) {
+            try {
+                console.log('Loading products for brand ID:', brandId);
+                
+                // Show loading state
+                const productsGrid = document.getElementById('productsGrid');
+                productsGrid.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading products...
+                    </div>
+                `;
+                
+                // Fetch products with their properties
+                const { data: products, error } = await window.supabaseClient
+                    .from('products')
+                    .select(`
+                        *,
+                        product_properties (
+                            property: properties (name, short_label, icon_url)
+                        )
+                    `)
+                    .eq('brand_id', brandId)
+                    .order('name');
+                
+                if (error) throw error;
+                
+                console.log('Products loaded:', products);
+                
+                // Clear loading state
+                productsGrid.innerHTML = '';
+                
+                if (products.length === 0) {
+                    productsGrid.innerHTML = `
+                        <div class="no-products">
+                            <i class="fas fa-box-open"></i>
+                            <p>No Products Found</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Create product cards
+                products.forEach(product => {
+                    const productCard = createProductCard(product, brandName);
+                    productsGrid.appendChild(productCard);
+                });
+                
+                // Add event listeners for Add to Cart buttons
+                setTimeout(() => {
+                    document.querySelectorAll('.add-to-cart').forEach(button => {
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const productId = this.getAttribute('data-product-id');
+                            const productName = this.getAttribute('data-product-name');
+                            const productDescription = this.getAttribute('data-product-description');
+                            const productImage = this.getAttribute('data-product-image');
+                            const brandId = this.getAttribute('data-brand-id');
+                            
+                            const product = {
+                                id: productId,
+                                name: productName,
+                                description: productDescription,
+                                image_url: productImage,
+                                brand_id: brandId,
+                                quantity: 1
+                            };
+                            
+                            // Add to cart
+                            if (typeof addToCartFallback === 'function') {
+                                addToCartFallback(product);
+                            } else if (window.cartManager && typeof window.cartManager.addToCart === 'function') {
+                                window.cartManager.addToCart(product);
+                            }
+                            
+                            // Add visual feedback
+                            this.classList.add('added');
+                            setTimeout(() => {
+                                this.classList.remove('added');
+                            }, 600);
+                        });
+                    });
+                }, 100);
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsGrid').innerHTML = 
+                    `<div class="error">Error loading products</div>`;
+            }
+        }
+        
+        function createProductCard(product, brandName) {
+            const shortDescription = product.description && product.description.length > 100 
+                ? product.description.substring(0, 100) + '...' 
+                : product.description || '';
+            
+            const card = document.createElement('a');
+            card.href = `product.html?id=${product.id}`;
+            card.className = 'product-card';
+            
+            card.innerHTML = `
+                <div class="product-image-container">
+                    <img src="${product.image_url || 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop'}" 
+                         alt="${product.name}" 
+                         class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="brand-badge">🔖 ${brandName}</div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="product-description-container">
+                        <p class="product-description">${shortDescription}</p>
+                    </div>
+                    
+                    ${product.product_properties && product.product_properties.length > 0 ? `
+                    <div class="properties">
+                        ${product.product_properties.map(pp => `
+                            <span class="property-tag">
+                                ${pp.property.icon_url ? `<img src="${pp.property.icon_url}" alt="${pp.property.name}" class="property-icon">` : ''}
+                                <span class="property-label">${pp.property.short_label || pp.property.name}</span>
+                            </span>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                    
+                    <div class="product-actions">
+                        <button class="btn add-to-cart" 
+                                data-product-id="${product.id}"
+                                data-product-name="${product.name}"
+                                data-product-description="${product.description}"
+                                data-product-image="${product.image_url || ''}"
+                                data-brand-id="${product.brand_id}">
+                            <i class="fas fa-cart-plus"></i> Add To Cart
+                        </button>
+                        <span class="view-details">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('peintureLandCart')) || [];
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            const cartCountElements = document.querySelectorAll('.cart-count');
+            cartCountElements.forEach(element => {
+                element.textContent = cartCount;
+            });
+        }
+    </script>
+
+    <style>
+        /* Language Toggle */
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        #lang-flag {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .lang-btn:hover #lang-flag {
+            transform: rotate(360deg);
+        }
+
+        /* Brand page specific styles */
+        .brand-header {
+            background: linear-gradient(135deg, #2a5c9c 0%, #006d8f 100%);
+            padding: 60px 0;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: #4facfe;
+        }
+        
+        .breadcrumb i {
+            margin: 0 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .brand-info h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .brand-info p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            color: #f0f0f0;
+            font-weight: 500;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .loading-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Products Section */
+        .products-section {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 40%;
+            width: 20%;
+            height: 4px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 2px;
+        }
+        
+        /* Product Grid - Symmetrical Layout */
+        .brand-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 50px;
+            align-items: stretch; /* This makes all cards in a row the same height */
+        }
+        
+        /* Perfect Product Card with Fixed Height */
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Make all cards same height */
+            min-height: 500px; /* Minimum height for consistency */
+            border: 1px solid rgba(79, 172, 254, 0.1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.09);
+            box-shadow: 0 50px 80px rgba(0, 110, 255, 0.15);
+            border-color: rgba(0, 140, 255, 0.3);
+        }
+        
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+            flex-shrink: 0; /* Don't let image container shrink */
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.6s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.25);
+        }
+        
+        .product-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Make info section fill remaining space */
+            height: calc(100% - 220px); /* Subtract image height */
+            min-height: 280px; /* Minimum info section height */
+        }
+        
+        .brand-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+        
+        .product-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #1a1a2e;
+            line-height: 1.4;
+            min-height: 56px; /* Fixed height for name (2 lines) */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Scrollable Description Container */
+        .product-description-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            min-height: 80px;
+            max-height: 120px;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+        
+        .product-description-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .product-description-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .product-description-container::-webkit-scrollbar-thumb {
+            background: #4facfe;
+            border-radius: 10px;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        /* Properties Section - Fixed Height */
+        .properties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0 20px 0;
+            min-height: 40px;
+            max-height: 80px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .properties::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        .properties::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .properties::-webkit-scrollbar-thumb {
+            background: #00f2fe;
+            border-radius: 10px;
+        }
+        
+        .property-tag {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            color: #0c4a6e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            height: 32px;
+        }
+        
+        .property-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+        
+        /* Product Actions - Fixed at Bottom */
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto; /* Push to bottom of card */
+            padding-top: 20px;
+            border-top: 1px solid rgba(79, 172, 254, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .view-details {
+            color: #4facfe;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .product-card:hover .view-details {
+            transform: translateX(5px);
+            color: #f093fb;
+        }
+        
+        /* Animation for Add to Cart */
+        .add-to-cart.added {
+            animation: cartAdded 0.6s ease;
+        }
+        
+        @keyframes cartAdded {
+            0% { 
+                transform: scale(1); 
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            }
+            50% { 
+                transform: scale(1.1); 
+                background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            }
+            100% { 
+                transform: scale(1); 
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            }
+        }
+        
+        /* Loading and Error States */
+        .loading, .no-products, .error {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .loading i, .no-products i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        .error {
+            color: #dc3545;
+        }
+        
+        .no-products {
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .brand-products {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            
+            .product-card {
+                min-height: 480px;
+            }
+            
+            .product-image-container {
+                height: 200px;
+            }
+            
+            .product-info {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .brand-products {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .btn, .view-details {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Footer Address Styles */
+        .footer-address {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .address-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .address-line:last-child {
+            border-bottom: none;
+        }
+
+        .address-line:hover {
+            transform: translateX(5px);
+            border-bottom-color: rgba(79, 172, 254, 0.5);
+        }
+
+        .address-line i {
+            color: #4facfe;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            margin-top: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .address-line:hover i {
+            transform: scale(1.2);
+            color: #00f2fe;
+        }
+
+        .address-line span {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .map-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        }
+
+        .map-link i {
+            font-size: 1rem;
+        }
+
+        /* Footer general styles */
+        .footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #f093fb, #f5576c);
+            background-size: 300% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-column h4 i {
+            color: #4facfe;
+        }
+
+        .footer-contact p,
+        .footer-hours p {
+            color: #b0b0b0;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i,
+        .footer-hours i {
+            color: #4facfe;
+            width: 20px;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .footer-legal {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
 </body>
 </html>
