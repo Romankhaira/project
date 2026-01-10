@@ -183,8 +183,8 @@ class CartManager {
     }
     
     // Show notification
+    // In CartManager class, update showNotification method:
     showNotification(message) {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = 'cart-notification';
         notification.innerHTML = `
@@ -193,8 +193,8 @@ class CartManager {
                 <span>${message}</span>
             </div>
         `;
-        
-        // Add styles
+
+        // Remove inline styles and CSS animations
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -205,21 +205,42 @@ class CartManager {
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 10000;
-            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
             font-weight: 600;
         `;
-        
-        document.body.appendChild(notification);
-        
-        // Remove notification after 3 seconds
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.remove();
-            }
-        }, 3000);
-    }
-}
 
+        document.body.appendChild(notification);
+
+        // GSAP animation
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(notification,
+                { x: 100, opacity: 0 },
+                {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: "back.out(1.7)",
+                    onComplete: () => {
+                        setTimeout(() => {
+                            gsap.to(notification, {
+                                x: 100,
+                                opacity: 0,
+                                duration: 0.3,
+                                ease: "power2.in",
+                                onComplete: () => {
+                                    if (notification.parentNode) {
+                                        notification.remove();
+                                    }
+                                }
+                            });
+                        }, 2500);
+                    }
+                }
+            );
+        }
+    }
+    
+}
+    
 // Add global helper function
 window.updateCartCountGlobal = function() {
     if (window.cartManager) {

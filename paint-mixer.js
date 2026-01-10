@@ -110,7 +110,10 @@ class PaintMixer {
         document.querySelector('.apply-color-btn').addEventListener('click', () => {
             this.applyColorTheme();
             animationsManager.createConfetti();
-            animationsManager.showSuccessAnimation('Color Theme Applied!');
+            // Use window reference to ensure it exists
+            if (window.animationsManager && window.animationsManager.showSuccessAnimation) {
+                window.animationsManager.showSuccessAnimation('Color Theme Applied!');
+            }
         });
         
         // Close mixer

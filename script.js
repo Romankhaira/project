@@ -35,6 +35,72 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
+// Add smooth scroll to sections
+document.addEventListener('DOMContentLoaded', () => {
+    // Force-smooth-scroll helper (uses rAF to bypass browser reduced-motion)
+    function forceSmoothScrollTo(targetY, duration = 800) {
+        const startY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const diff = targetY - startY;
+        if (diff === 0) return;
+        const startTime = performance.now();
+
+        const ease = t => 0.5 * (1 - Math.cos(Math.PI * t)); // easeInOut
+
+        function step(now) {
+            const elapsed = Math.min(1, (now - startTime) / duration);
+            const eased = ease(elapsed);
+            window.scrollTo(0, Math.round(startY + diff * eased));
+            if (elapsed < 1) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    // Smooth scroll for hero buttons
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (!targetElement) return;
+
+            e.preventDefault();
+
+            // Prefer GSAP ScrollTo plugin if available; otherwise fallback to native
+            try {
+                const hasScrollToPlugin = (typeof ScrollToPlugin !== 'undefined')
+                    || (typeof gsap !== 'undefined' && gsap.plugins && gsap.plugins.ScrollToPlugin)
+                    || (typeof gsap !== 'undefined' && gsap.core && gsap.core.plugins && gsap.core.plugins.ScrollToPlugin);
+
+                if (hasScrollToPlugin && typeof gsap !== 'undefined' && typeof gsap.to === 'function') {
+                    gsap.to(window, {
+                        duration: 1,
+                        scrollTo: {
+                            y: targetElement,
+                            offsetY: 80
+                        },
+                        ease: "power2.inOut"
+                    });
+                    return;
+                }
+            } catch (err) {
+                // ignore and fallback to native
+            }
+
+            // Fallback: native smooth scroll with offset
+            const y = targetElement.getBoundingClientRect().top + window.pageYOffset - 80;
+            // Use forced JS-based smooth scroll to bypass browser reduced-motion
+            try {
+                forceSmoothScrollTo(y, 800);
+            } catch (err) {
+                // last-resort: native call
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        });
+    });
+});
+
 
 // Add error display function
 function showErrorMessage(message) {
@@ -74,6 +140,17 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
+// Add to script.js - Helper function to refresh animations after dynamic content
+function refreshPageAnimations() {
+    if (window.gsapAnimations && typeof window.gsapAnimations.refreshAnimations === 'function') {
+        window.gsapAnimations.refreshAnimations();
+    }
+
+    if (typeof ScrollTrigger !== 'undefined' && typeof ScrollTrigger.refresh === 'function') {
+        ScrollTrigger.refresh();
+    }
+}
+
 // Load all brands from Supabase
 async function loadBrands() {
     try {
@@ -94,14 +171,11 @@ async function loadBrands() {
             .from('brands')
             .select('*')
             .order('name');
-        
-        if (error) {
-            throw error;
-        }
-        
+
+        if (error) throw error;
+
         console.log('Brands loaded:', brands);
-        console.log('Number of brands:', brands?.length || 0);
-        
+
         // Build brand map for other pages
         BRAND_MAP = {};
         if (brands && brands.length > 0) {
@@ -109,18 +183,19 @@ async function loadBrands() {
                 BRAND_MAP[brand.id] = brand.name;
             });
         }
-        
-        // Clear loading state
+
+        // Clear loading state and render
         if (brandsGrid) {
             brandsGrid.innerHTML = '';
-            
-            // Create brand cards
+
             if (brands && brands.length > 0) {
                 brands.forEach(brand => {
-                    console.log('Creating card for brand:', brand.name, 'ID:', brand.id);
                     const brandCard = createBrandCard(brand);
                     brandsGrid.appendChild(brandCard);
                 });
+
+                // REFRESH ANIMATIONS AFTER CARDS ARE ADDED
+                setTimeout(() => refreshPageAnimations(), 100);
             } else {
                 brandsGrid.innerHTML = `<div class="loading">No brands found. Please add brands in Supabase.</div>`;
             }
@@ -140,7 +215,7 @@ function createBrandCard(brand) {
     
     const card = document.createElement('a');
     card.href = `brand.html?id=${brand.id}`;
-    card.className = 'brand-card';
+    card.className = 'brand-card will-animate';
     
     card.innerHTML = `
         <img src="${brand.logo_url || 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=200&fit=crop'}" 
@@ -184,25 +259,23 @@ async function loadMaterials() {
             .from('materials')
             .select('*')
             .order('name');
-        
-        if (error) {
-            throw error;
-        }
-        
+
+        if (error) throw error;
+
         console.log('Materials loaded:', materials);
-        console.log('Number of materials:', materials?.length || 0);
-        
-        // Clear loading state
+
+        // Clear loading state and render
         if (materialsGrid) {
             materialsGrid.innerHTML = '';
-            
-            // Create material cards
+
             if (materials && materials.length > 0) {
                 materials.forEach(material => {
-                    console.log('Creating card for material:', material.name, 'ID:', material.id);
                     const materialCard = createMaterialCard(material);
                     materialsGrid.appendChild(materialCard);
                 });
+
+                // REFRESH ANIMATIONS AFTER CARDS ARE ADDED
+                setTimeout(() => refreshPageAnimations(), 100);
             } else {
                 materialsGrid.innerHTML = `<div class="loading">No materials found. Please add materials in Supabase.</div>`;
             }
@@ -221,7 +294,7 @@ function createMaterialCard(material) {
     
     const card = document.createElement('a');
     card.href = `material.html?id=${material.id}`;
-    card.className = 'material-card';
+    card.className = 'material-card will-animate';
     
     card.innerHTML = `
         <div class="material-info">
@@ -269,6 +342,20 @@ function addToCartFallback(product) {
         
         // Update cart count
         updateCartCount();
+
+        // Animate cart count using GSAP if available
+        if (typeof gsap !== 'undefined') {
+            const cartCountElement = document.querySelector('.cart-count');
+            if (cartCountElement) {
+                gsap.to(cartCountElement, {
+                    scale: 1.3,
+                    duration: 0.2,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power2.inOut"
+                });
+            }
+        }
         
         // Show notification
         const notification = document.createElement('div');
@@ -282,7 +369,6 @@ function addToCartFallback(product) {
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 10000;
-            animation: fadeIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
             font-weight: 600;
         `;
         notification.innerHTML = `<i class="fas fa-check-circle"></i> ${product.name} added to cart`;

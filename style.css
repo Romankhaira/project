@@ -19,6 +19,12 @@ body {
     padding: 0 20px;
 }
 
+/* Force smooth scrolling site-wide (override user-agent and prefers-reduced-motion) */
+html {
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
 /* Header Styles */
 .header {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -103,34 +109,354 @@ body {
 }
 
 /* Hero Section */
+/* ===== MINIMAL ELEGANT HERO SECTION ===== */
+
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                url("../hero.png");
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 80px 0;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0B0D10;
+    overflow: hidden;
+    padding: 120px 0 80px;
+    color: #EAEAEA;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Subtle paint texture overlay */
+.paint-texture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(0, 224, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 176, 0, 0.02) 0%, transparent 50%);
+    opacity: 0.4;
+}
+
+/* Paint drip accents */
+.paint-drip-accent {
+    position: absolute;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(to bottom, transparent, #00E0FF, transparent);
+    opacity: 1;
+}
+
+.drip-1 {
+    left: 15%;
+    top: -100px;
+}
+
+.drip-2 {
+    left: 50%;
+    top: -100px;
+    transform: translateX(-50%);
+}
+
+.drip-3 {
+    right: 15%;
+    top: -100px;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
     text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero logo */
+.hero-logo {
     margin-bottom: 40px;
+    opacity: 1;
 }
 
-.hero h2 {
-    font-size: 3rem;
+.hero-logo-img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: brightness(1.1) contrast(1.1);
+}
+
+/* Hero content */
+.hero-content {
+    margin-bottom: 60px;
+}
+
+.hero-tagline {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #00E0FF;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    opacity: 1;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.hero p {
-    font-size: 1.3rem;
+.hero-title {
+    font-size: clamp(3.5rem, 8vw, 6rem);
+    font-weight: 300;
+    line-height: 0.9;
     margin-bottom: 30px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    letter-spacing: -2px;
+    font-family: 'Segoe UI', sans-serif;
 }
 
+.title-line-1 {
+    display: block;
+    color: #EAEAEA;
+    opacity: 1;
+}
+
+.title-line-2 {
+    display: block;
+    color: #00E0FF;
+    font-weight: 400;
+    opacity: 1;
+}
+
+/* Elegant divider */
+.hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px auto 40px;
+    max-width: 200px;
+    opacity: 1;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #FFB000, transparent);
+}
+
+.divider-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #FFB000;
+    border-radius: 50%;
+}
+
+/* Hero description */
+.hero-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: rgba(234, 234, 234, 0.8);
+    max-width: 600px;
+    margin: 0 auto 50px;
+    font-weight: 300;
+    opacity: 1;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Hero action buttons */
+.hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+    opacity: 1;
+}
+
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    min-width: 180px;
+    justify-content: center;
+}
+
+.btn-hero-primary {
+    background: rgba(0, 224, 255, 0.1);
+    color: #00E0FF;
+    border: 1px solid rgba(0, 224, 255, 0.3);
+}
+
+.btn-hero-primary:hover {
+    background: rgba(0, 224, 255, 0.2);
+    border-color: rgba(0, 224, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 224, 255, 0.15);
+}
+
+.btn-hero-secondary {
+    background: rgba(255, 176, 0, 0.1);
+    color: #FFB000;
+    border: 1px solid rgba(255, 176, 0, 0.3);
+}
+
+.btn-hero-secondary:hover {
+    background: rgba(255, 176, 0, 0.2);
+    border-color: rgba(255, 176, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 176, 0, 0.15);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-hero:hover .btn-icon {
+    transform: translateX(5px);
+}
+
+.btn-hero-secondary:hover .btn-icon {
+    transform: translateY(-5px);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 1;
+}
+
+.scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, #00E0FF, transparent);
+    animation: scrollLinePulse 2s ease-in-out infinite;
+}
+
+.scroll-text {
+    font-size: 0.85rem;
+    color: rgba(234, 234, 234, 0.6);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+@keyframes scrollLinePulse {
+    0%, 100% {
+        height: 40px;
+        opacity: 0.6;
+    }
+    50% {
+        height: 60px;
+        opacity: 1;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .hero {
+        min-height: 90vh;
+        padding: 100px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        letter-spacing: -1px;
+    }
+    
+    .hero-tagline {
+        font-size: 0.9rem;
+        letter-spacing: 3px;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+        padding: 0 20px;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .btn-hero {
+        width: 100%;
+        max-width: 250px;
+        padding: 14px 28px;
+    }
+    
+    .hero-divider {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 80px 0 40px;
+    }
+    
+    .hero-logo-img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .hero-title {
+        font-size: clamp(2rem, 12vw, 3rem);
+    }
+    
+    .hero-tagline {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .scroll-indicator {
+        bottom: 20px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-line {
+        animation: none;
+        height: 40px;
+        opacity: 0.6;
+    }
+    
+    .btn-hero:hover {
+        transform: none;
+    }
+    
+    .btn-hero:hover .btn-icon {
+        transform: none;
+    }
+}
 .contact-info {
     background: rgba(255,255,255,0.1);
     padding: 20px;
@@ -399,24 +725,8 @@ body {
 /* Enhanced header gradient animation */
 .header {
     background: linear-gradient(-45deg, #4facfe, #00f2fe, #667eea, #764ba2);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
 }
 
-/* Enhanced hero section */
-.hero {
-    animation: fadeIn 1s ease;
-}
-
-/* Enhanced brand cards */
-.brand-card {
-    animation: fadeInUp 0.8s ease;
-}
-
-/* Enhanced product cards */
-.product-card {
-    animation: fadeInScale 0.6s ease;
-}
 
 /* Enhanced buttons */
 .btn {
@@ -488,6 +798,7 @@ input:focus, textarea:focus, select:focus {
     box-shadow: 0 10px 20px rgba(79, 172, 254, 0.2);
 }
 
+/* Add to style.css - CSS Variables for Paint Mixer */
 :root {
     --primary-color: #4facfe;
     --secondary-color: #00f2fe;
@@ -500,6 +811,7 @@ input:focus, textarea:focus, select:focus {
     --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 /* Cart Page Styles - ENHANCED WITH PROPER CONTRAST */
 .cart-section h2 {
@@ -828,8 +1140,13 @@ input:focus, textarea:focus, select:focus {
     cursor: pointer;
     text-decoration: none;
     color: #000000;
-    display: block;
+
+    /* NEW */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
+
 
 .material-card:hover {
     transform: translateY(-10px);
@@ -839,12 +1156,22 @@ input:focus, textarea:focus, select:focus {
 .material-image {
     width: 100%;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
+
+    /* NEW */
+    flex-shrink: 0;
 }
+
 
 .material-info {
     padding: 25px;
+
+    /* NEW */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
+
 
 .material-name {
     font-size: 1.5rem;
@@ -857,7 +1184,17 @@ input:focus, textarea:focus, select:focus {
     color: #000000;
     font-size: 0.95rem;
     line-height: 1.5;
+
+    /* NEW — 2 line clamp */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
 }
+
+
+
 
 /* Loading State */
 .materials-grid .loading {
@@ -957,15 +1294,7 @@ input:focus, textarea:focus, select:focus {
     font-weight: 600;
 }
 
-.material-card:hover .view-materials i {
-    animation: gentleSwing 1s ease-in-out infinite;
-}
 
-@keyframes gentleSwing {
-    0%, 100% { transform: translateX(0) rotate(0); }
-    25% { transform: translateX(3px) rotate(10deg); }
-    75% { transform: translateX(3px) rotate(-10deg); }
-}
 
 /* Product Detail Section Styles - ADDED */
 .product-detail-section {
@@ -1040,75 +1369,8 @@ input:focus, textarea:focus, select:focus {
     gap: 25px;
 }
 
-/* Animation classes */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
-@keyframes fadeInUp {
-    from { 
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes fadeInDown {
-    from { 
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInLeft {
-    from { 
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInScale {
-    from { 
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to { 
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.5s ease forwards;
-}
-
-.animate-fade-in-up {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-.animate-fade-in-down {
-    animation: fadeInDown 0.5s ease forwards;
-}
-
-.animate-fade-in-left {
-    animation: fadeInLeft 0.5s ease forwards;
-}
-
-.animate-fade-in-scale {
-    animation: fadeInScale 0.5s ease forwards;
-}
 
 /* Stagger animation for related products */
 .stagger-animation .related-product-card {
@@ -1117,16 +1379,6 @@ input:focus, textarea:focus, select:focus {
     animation: fadeInUp 0.5s ease forwards;
 }
 
-/* Button pulse animation */
-.animate-button-pulse {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(79, 172, 254, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
-}
 
 
 /* Cart Color Display */
@@ -1150,4 +1402,407 @@ input:focus, textarea:focus, select:focus {
     color: #666;
     font-size: 0.85rem;
     margin-top: 3px;
+}
+
+/* Enhanced Card Styles for Scroll Animations - FIXED VERSION */
+.will-animate {
+    will-change: transform, opacity;
+    /* REMOVE opacity: 0 here - let GSAP handle it */
+    /* Remove transform: translateY(20px) here */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ensure cards are visible by default, GSAP will animate them */
+.brand-card, .product-card, .material-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1; /* Ensure cards are visible */
+    transform: translateY(0); /* Reset any transform */
+}
+
+/* Paint drip top accent */
+.brand-card::before,
+.product-card::before,
+.material-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #00E0FF, #FFB000);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.brand-card:hover::before,
+.product-card:hover::before,
+.material-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Smooth image transitions */
+.brand-image,
+.product-image,
+.material-image {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Paint-themed hover effect */
+.brand-card:hover .brand-image,
+.product-card:hover .product-image,
+.material-card:hover .material-image {
+    transform: scale(1.08);
+    filter: brightness(1.05) saturate(1.1);
+}
+
+/* Card content animations on hover */
+.brand-card:hover .brand-name,
+.product-card:hover .product-name,
+.material-card:hover .material-name {
+    color: #00E0FF;
+    transform: translateY(-2px);
+    display: inline-block;
+}
+
+/* Cart item animations */
+.cart-item {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.cart-item:hover {
+    border-left-color: #00E0FF;
+    transform: translateX(5px);
+}
+
+/* Related product card enhancements */
+.related-product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.related-product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 224, 255, 0.1);
+}
+
+/* Section title animation base */
+.section-title {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 40px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #00E0FF, #FFB000);
+    border-radius: 2px;
+}
+
+/* Add this: Ensure cards are visible even if JS fails */
+.no-js .brand-card,
+.no-js .product-card,
+.no-js .material-card {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+
+/* Mobile-specific scroll animations */
+@media (max-width: 768px) {
+    /* Reduce animation intensity on mobile */
+    .will-animate {
+        transform: translateY(10px) !important;
+    }
+    
+    /* Faster animations on mobile */
+    .brand-card,
+    .product-card,
+    .material-card {
+        transition-duration: 0.2s !important;
+    }
+    
+    /* Reduce hover effects on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+        .brand-card:hover,
+        .product-card:hover,
+        .material-card:hover {
+            transform: none !important;
+        }
+        
+        .brand-card:hover::before,
+        .product-card:hover::before,
+        .material-card:hover::before {
+            transform: scaleX(0) !important;
+        }
+    }
+}
+
+/* Print styles - disable animations */
+@media print {
+    .will-animate,
+    .brand-card,
+    .product-card,
+    .material-card {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+
+/* ===== PAINT BUCKET LOADER ANIMATIONS ===== */
+@keyframes dripFall {
+    0% {
+        transform: translateY(0) scaleY(1);
+        opacity: 1;
+    }
+    80% {
+        transform: translateY(80px) scaleY(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100px) scaleY(0.3);
+        opacity: 0;
+    }
+}
+
+/* Bucket paint wave effect */
+@keyframes paintWave {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-5px) scale(1.02);
+    }
+}
+
+/* Loading text pulse */
+@keyframes textPulse {
+    0%, 100% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Add to existing animations.css or style.css */
+#paint-bucket-loader .bucket-fill {
+    animation: paintWave 2s ease-in-out infinite;
+}
+
+#paint-bucket-loader div[style*="PEINTURE LAND"] {
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+/* Smooth transition for page content after loader */
+body:has(#paint-bucket-loader) main,
+body:has(#paint-bucket-loader) .header {
+    opacity: 0;
+    transition: opacity 0.5s ease 0.5s;
+}
+
+body:not(:has(#paint-bucket-loader)) main,
+body:not(:has(#paint-bucket-loader)) .header {
+    opacity: 1;
+}
+
+
+
+L/* PAINT BUCKET LOADER STYLES */
+
+
+/* Apply animations */
+#paint-bucket-loader .bucket-fill {
+    animation: paintWave 2s ease-in-out infinite;
+}
+
+#paint-bucket-loader .bucket-container {
+    animation: bucketFloat 3s ease-in-out infinite;
+}
+
+#paint-bucket-loader .percentage-text {
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+#paint-bucket-loader .splash-container > div {
+    animation: splashPulse 3s ease-in-out infinite;
+}
+
+/* Smooth content reveal after loader */
+body.loader-active {
+    overflow: hidden;
+}
+
+body.loader-active main,
+body.loader-active .header {
+    opacity: 0;
+}
+
+body.loader-complete main,
+body.loader-complete .header {
+    opacity: 1;
+    animation: fadeInContent 0.8s ease;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+/* ===== PAINT LOADER - EVERY PAGE VERSION ===== */
+body.loader-active {
+    overflow: hidden;
+}
+
+body.loader-active * {
+    animation-play-state: paused !important;
+}
+
+body.loader-complete {
+    overflow: auto;
+}
+
+/* Smooth content fade-in after loader */
+main, .header, .hero, .brands-section, .materials-section {
+    opacity: 0;
+    animation: fadeInAfterLoader 0.5s ease forwards;
+    animation-delay: 0.3s;
+}
+
+body.loader-complete main,
+body.loader-complete .header,
+body.loader-complete .hero,
+body.loader-complete .brands-section,
+body.loader-complete .materials-section {
+    opacity: 1;
+}
+
+@keyframes fadeInAfterLoader {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Prevent content flash before loader starts */
+body:not(.loader-complete) .container:not(#paint-bucket-loader) {
+    visibility: hidden;
+}
+
+/* Loader animations */
+@keyframes paintSplashPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes bucketBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes percentagePulse {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        text-shadow: 0 0 20px rgba(0, 224, 255, 0.6);
+    }
+}
+
+/* Apply animations */
+#paint-bucket-loader .splash-container > div {
+    animation: paintSplashPop 0.6s ease forwards;
+}
+
+#paint-bucket-loader .bucket-container {
+    animation: bucketBounce 2s ease-in-out infinite;
+}
+
+#paint-bucket-loader .percentage-text {
+    animation: percentagePulse 1.5s ease-in-out infinite;
+}
+
+
+
+
+
+/* Ensure hero doesn't overlap with header on mobile */
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 140px; /* More space for fixed header */
+    }
+    
+    .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(11, 13, 16, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    
+    .hero-container {
+        padding-top: 20px;
+    }
+}
+
+/* Prevent horizontal overflow */
+.hero {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .hero {
+        min-height: -webkit-fill-available;
+    }
 }

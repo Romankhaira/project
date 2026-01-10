@@ -78,6 +78,8 @@ class AnimationsManager {
     }
     
     // Page transition animations
+    // Page transition animations
+    // Page transition animations - FIXED VERSION
     initPageTransitions() {
         // Add page transition class to main content
         const mainContent = document.querySelector('main') || document.querySelector('.container');
@@ -85,20 +87,22 @@ class AnimationsManager {
             mainContent.classList.add('page-transition');
         }
         
-        // Animate page load
+        // Fade in body immediately
         document.body.style.opacity = '0';
-        window.addEventListener('load', () => {
+        requestAnimationFrame(() => {
             document.body.style.transition = 'opacity 0.6s ease';
             document.body.style.opacity = '1';
-            
-            // Add paint drip effect to header
-            const header = document.querySelector('.header');
-            if (header) {
-                header.classList.add('animate-paint-drip');
-            }
         });
+        
+        // Add paint drip effect to header
+        const header = document.querySelector('.header');
+        if (header) {
+            header.classList.add('animate-paint-drip');
+        }
     }
     
+    
+
     // Loading animations
     initLoadingAnimations() {
         // Replace loading text with spinner
@@ -168,6 +172,7 @@ class AnimationsManager {
     }
     
     // Paint-specific effects
+    // Paint-specific effects - FIXED VERSION
     initPaintEffects() {
         // Add paint cursor to interactive elements
         document.body.classList.add('paint-cursor');
@@ -180,26 +185,27 @@ class AnimationsManager {
             }, 100);
         });
         
-        // Add paint splash effect to hero section
+        // Add paint splash effect to hero section - WITH LIMIT
         const hero = document.querySelector('.hero');
-        if (hero) {
+        if (hero && !hero.dataset.paintSplashesAdded) {
             hero.style.position = 'relative';
             hero.style.overflow = 'hidden';
+            hero.dataset.paintSplashesAdded = 'true';
             
-            // Create paint splashes
-            for (let i = 0; i < 5; i++) {
+            // Create LIMITED paint splashes (only 3, not infinite)
+            for (let i = 0; i < 3; i++) {
                 const splash = document.createElement('div');
                 splash.style.position = 'absolute';
-                splash.style.width = `${Math.random() * 100 + 50}px`;
+                splash.style.width = `${Math.random() * 60 + 30}px`;
                 splash.style.height = splash.style.width;
                 splash.style.background = `radial-gradient(circle, 
-                    rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3),
+                    rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, 255, 0.3),
                     transparent 70%)`;
                 splash.style.borderRadius = '50%';
                 splash.style.top = `${Math.random() * 100}%`;
                 splash.style.left = `${Math.random() * 100}%`;
-                splash.style.opacity = '0';
-                splash.style.animation = `paintSplash ${Math.random() * 3 + 2}s infinite`;
+                splash.style.opacity = '0.5';
+                splash.style.animation = `paintSplash ${Math.random() * 2 + 3}s ease-in-out infinite alternate`;
                 splash.style.animationDelay = `${Math.random() * 2}s`;
                 splash.style.zIndex = '1';
                 hero.appendChild(splash);
@@ -290,12 +296,14 @@ class AnimationsManager {
         document.body.appendChild(successDiv);
         
         setTimeout(() => {
-            successDiv.style.animation = 'fadeInScale 0.5s ease reverse forwards';
+            // Use the correct fadeOut animation
+            successDiv.style.animation = 'fadeOut 0.5s ease forwards';
             setTimeout(() => {
-                successDiv.remove();
+                if (successDiv.parentNode) {
+                    successDiv.remove();
+                }
             }, 500);
-        }, 2000);
-    }
+        }, 2000);    }
 }
 
 // Initialize animations when DOM is loaded

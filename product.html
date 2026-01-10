@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="animations.css">
     <link rel="stylesheet" href="background-pattern.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -107,7 +106,7 @@
                 <div class="footer-column">
                     <h4><i class="fas fa-clock"></i> Business Hours</h4>
                     <div class="footer-hours">
-                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                        <p><strong>Monday - Friday:</strong> 6:00 AM - 6:00 PM</p>
                         <p><strong>Saturday:</strong> 9:00 AM - 1:00 PM</p>
                         <p><strong>Sunday:</strong> Closed</p>
                     </div>
@@ -121,12 +120,16 @@
         </div>
     </footer>
 
-    <script src="animations.js"></script>
-    <script src="paint-mixer.js"></script>
-    <script src="logo-loader.js"></script>
-    <script src="supabase-client.js"></script>
-    <script src="script.js"></script>
-    <script src="cart-manager.js"></script>
+
+<script src="js/libs/gsap/gsap.min.js"></script>
+<script src="js/libs/gsap/ScrollTrigger.min.js"></script>
+<script src="js/paint-loader-enhanced.js"></script>
+<script src="js/gsap-animations.js"></script>
+<script src="logo-loader.js"></script>
+<script src="paint-mixer.js"></script>
+<script src="supabase-client.js"></script>
+<script src="cart-manager.js"></script>
+<script src="script.js"></script>
     
     <script>
         // Product page specific JavaScript
@@ -151,9 +154,9 @@
         });
         
         function initializeAnimations() {
-            const mainImage = document.querySelector('.product-main-image');
-            if (mainImage) {
-                mainImage.classList.add('animate-fade-in');
+            // Remove old code and replace with:
+            if (typeof gsap !== 'undefined' && window.gsapAnimations) {
+                // GSAP will handle animations automatically
             }
         }
         
@@ -485,7 +488,7 @@
             const container = document.getElementById('productContainer');
             container.innerHTML = `
                 <!-- Product Image at Top -->
-                <div class="product-image-top animate-fade-in">
+                <div class="product-image-top will-animate">
                     <div class="product-image-container">
                         <img id="mainProductImage" src="${product.image_url || 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=500&fit=crop'}" 
                              alt="${product.name}" 
@@ -495,7 +498,7 @@
                 
                 <!-- Product Information Below Image -->
                 <div class="product-info-below">
-                    <div class="product-basic-info animate-fade-in-up">
+                    <div class="product-basic-info will-animate">
                         <h1 id="productTitle">${product.name}</h1>
                         <div class="brand-tag" id="brandTag">
                             <i class="fas fa-tag"></i> ${product.brands.name}

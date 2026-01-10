@@ -8,7 +8,6 @@
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="animations.css">
     <link rel="stylesheet" href="background-pattern.css">
 </head>
 <body>
@@ -110,7 +109,7 @@
                 <div class="footer-column">
                     <h4><i class="fas fa-clock"></i> Business Hours</h4>
                     <div class="footer-hours">
-                        <p><strong>Monday - Friday:</strong> 8:00 AM - 6:00 PM</p>
+                        <p><strong>Monday - Friday:</strong> 6:00 AM - 6:00 PM</p>
                         <p><strong>Saturday:</strong> 9:00 AM - 1:00 PM</p>
                         <p><strong>Sunday:</strong> Closed</p>
                     </div>
@@ -123,13 +122,16 @@
             </div>
         </div>
     </footer>
-
-    <script src="animations.js"></script>
-    <script src="logo-loader.js"></script>
-    <script src="paint-mixer.js"></script>
-    <script src="supabase-client.js"></script>
-    <script src="cart-manager.js"></script>
-    <script src="script.js"></script>
+<!-- Add GSAP libraries FIRST -->
+<script src="js/libs/gsap/gsap.min.js"></script>
+<script src="js/libs/gsap/ScrollTrigger.min.js"></script>
+<script src="js/paint-loader-enhanced.js"></script>
+<script src="js/gsap-animations.js"></script>
+<script src="logo-loader.js"></script>
+<script src="paint-mixer.js"></script>
+<script src="supabase-client.js"></script>
+<script src="cart-manager.js"></script>
+<script src="script.js"></script>
 
     <script>
         // Brand page specific JavaScript
@@ -242,11 +244,22 @@
                     return;
                 }
                 
-                // Create product cards
+                // Create product cards and mark for animation
                 products.forEach(product => {
                     const productCard = createProductCard(product, brandName);
+                    productCard.classList.add('will-animate'); // Add animation class
                     productsGrid.appendChild(productCard);
                 });
+
+                // AFTER ALL CARDS ARE ADDED, REFRESH ANIMATIONS
+                setTimeout(() => {
+                    if (typeof ScrollTrigger !== 'undefined') {
+                        ScrollTrigger.refresh();
+                    }
+                    if (window.gsapAnimations && typeof window.gsapAnimations.refreshAnimations === 'function') {
+                        window.gsapAnimations.refreshAnimations();
+                    }
+                }, 200);
                 
                 // Add event listeners for Add to Cart buttons
                 setTimeout(() => {
