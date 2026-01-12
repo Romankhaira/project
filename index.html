@@ -96,7 +96,19 @@
     <section class="brands-section" id="brands-section">
         <div class="container">
             <div class="section-title-wrapper">
+            <div class="brands-divider">
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
+            </div>
+
                 <h2 class="animate-fade-in-up">BRANDS</h2>
+            <div class="brands-divider">
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
+            </div>
+
             </div>
             <div class="brands-grid stagger-animation" id="brandsGrid">
                 <div class="loading">Loading brands...</div>
@@ -107,14 +119,34 @@
     <!-- Materials Section -->
     <section class="materials-section" id="materials-section">
         <div class="container">
+
+            <!-- Top Divider -->
+            <div class="materials-divider">
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- Title -->
             <div class="section-title-wrapper">
                 <h2 class="animate-fade-in-up">MATERIALS</h2>
             </div>
-            <div class="materials-grid stagger-animation" id="materialsGrid">
-                <div class="loading">Loading materials...</div>
+
+            <!-- Bottom Divider -->
+            <div class="materials-divider">
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
             </div>
+
+            <!-- Materials Rows -->
+            <div id="materialsGrid" class="materials-rows-container">
+                Loading materials...
+            </div>
+
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -188,8 +220,53 @@
 <script src="supabase-client.js"></script>
 <script src="cart-manager.js"></script>
 <script src="script.js"></script>
-
+<!--#4facfe-->
     <style>
+        .brands-divider .divider-line {
+            flex: 1;
+            height: 4px;
+            margin: 0 auto 0;
+            background: linear-gradient(90deg, transparent, #00E0FF, transparent);
+        }
+        .brands-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0px auto 0px ;
+            width: 200px;
+            opacity: 1;
+        }
+        .brands-divider .divider-dot {
+            width: 13px;
+            height: 13px;
+            background-color: #00E0FF;
+            border-radius: 100%;
+        }
+
+        .materials-divider .divider-line {
+            flex: 1;
+            height: 4px;
+            margin: 0 auto 0;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+        }
+        .materials-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0px auto 0px;
+            width: 300px;
+            opacity: 1;
+        }
+        .materials-divider .divider-dot {
+            width: 13px;
+            height: 13px;
+            background-color: #ff0000;
+            border-radius: 100%;
+        }
+
+
         /* Footer Address Styles */
         .footer-address {
             margin-top: 15px;

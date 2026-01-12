@@ -2,7 +2,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; 
 }
 
 body {
@@ -84,7 +84,7 @@ html {
 }
 
 .nav a.active {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.267);
 }
 
 .cart-link {
@@ -186,8 +186,8 @@ html {
 }
 
 .hero-logo-img {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 180px;
     object-fit: contain;
     filter: brightness(1.1) contrast(1.1);
 }
@@ -199,7 +199,7 @@ html {
 
 .hero-tagline {
     font-size: 1.1rem;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: #00E0FF;
@@ -213,20 +213,23 @@ html {
     font-weight: 300;
     line-height: 0.9;
     margin-bottom: 30px;
-    letter-spacing: -2px;
+    letter-spacing: 2px;
     font-family: 'Segoe UI', sans-serif;
 }
 
 .title-line-1 {
     display: block;
-    color: #EAEAEA;
+    color: #ffffff;
+    font-weight: 650;
     opacity: 1;
 }
 
 .title-line-2 {
     display: block;
     color: #00E0FF;
-    font-weight: 400;
+    font-weight: 100;
+    margin: 10px 0 0;
+    font-size: clamp(2.5rem, 6vw, 4rem);
     opacity: 1;
 }
 
@@ -237,17 +240,18 @@ html {
     justify-content: center;
     gap: 15px;
     margin: 30px auto 40px;
-    max-width: 200px;
+    width: 200px;
     opacity: 1;
 }
 
-.divider-line {
+.hero-divider .divider-line {
     flex: 1;
-    height: 1px;
+    height: 2px;
     background: linear-gradient(90deg, transparent, #FFB000, transparent);
+    opacity: 1;
 }
 
-.divider-dot {
+.hero-divider .divider-dot {
     width: 6px;
     height: 6px;
     background-color: #FFB000;
@@ -417,10 +421,7 @@ html {
         padding: 80px 0 40px;
     }
     
-    .hero-logo-img {
-        width: 100px;
-        height: 100px;
-    }
+
     
     .hero-title {
         font-size: clamp(2rem, 12vw, 3rem);
@@ -480,26 +481,45 @@ html {
     padding: 60px 0;
     background: white;
     border-radius: 30px 30px 0 0;
-    margin-top: -30px;
+    margin-top: 0px;
     position: relative;
     z-index: 1;
 }
 
 .brands-section h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  text-align: center;
+  font-size: 4rem;             /* Dominant size */
+  font-weight: 900;             /* Heavy & strong */
+  letter-spacing: 2px;          /* Elegant spacing */
+  margin: -22px auto -15px;        /* Centered with spacing */
+  text-transform: uppercase;
+
+  /* Solid minimal gradient (subtle premium vibe) */
+  background: linear-gradient(120deg, #00E0FF, #00E0FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  /* Ultra-subtle shadow for depth */
+  text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+  /* For GSAP animation */
+  opacity: 1;
+  transform: scale(0.97);
+  transition: transform 0.4s ease-out;
 }
+
+/* Optional hover micro-scale for premium interaction */
+.brands-section h2:hover {
+  transform: scale(1.02);
+}
+
 
 .brands-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
-    margin-top: 30px;
+    margin-top: 80px;
 }
 
 .brand-card {
@@ -571,8 +591,7 @@ html {
 }
 
 .footer-logo-img {
-    width: 80px;
-    height: 80px;
+    width: 190px;
     margin-bottom: 15px;
 }
 
@@ -1103,26 +1122,62 @@ input:focus, textarea:focus, select:focus {
     opacity: 1 !important;
     transform: none !important;
 }
-
-/*css for material section*/
+/* css for material section */
 /* Materials Section */
 .materials-section {
     padding: 60px 0;
     background: white;
     border-radius: 30px 30px 0 0;
-    margin-top: -30px;
+    margin-top: 0px;
     position: relative;
     z-index: 1;
 }
 
 .materials-section h2 {
     text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-size: 4rem;             /* Dominant size */
+    font-weight: 900;            /* Heavy & strong */
+    letter-spacing: 2px;         /* Elegant spacing */
+    margin: -13px auto -10px;          /* Centered with spacing */
+    text-transform: uppercase;
+
+    /* Solid minimal gradient (subtle premium vibe) */
+    background: linear-gradient(120deg, #ff0101, #fd0000);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+
+    /* Ultra-subtle shadow for depth */
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.301);
+
+    /* Initial GSAP state for scroll animation */
+    opacity: 1;
+    transform: scale(0.97);
+    transition: transform 0.4s ease-out;
+}
+
+/* Micro-scale hover interaction (optional) */
+.materials-section h2:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .materials-section h2 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .materials-section h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .materials-section h2 {
+        font-size: 2rem;
+    }
 }
 
 .materials-grid {
@@ -1147,10 +1202,9 @@ input:focus, textarea:focus, select:focus {
     height: 100%;
 }
 
-
 .material-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .material-image {
@@ -1162,7 +1216,6 @@ input:focus, textarea:focus, select:focus {
     flex-shrink: 0;
 }
 
-
 .material-info {
     padding: 25px;
 
@@ -1171,7 +1224,6 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column;
     flex-grow: 1;
 }
-
 
 .material-name {
     font-size: 1.5rem;
@@ -1193,8 +1245,16 @@ input:focus, textarea:focus, select:focus {
     overflow: hidden;
 }
 
-
-
+/* Ensure the "View Details" control sticks to the bottom of a material card */
+.material-info .view-materials {
+    margin-top: auto !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a1a1a;
+    font-weight: 400;
+    cursor: pointer;
+}
 
 /* Loading State */
 .materials-grid .loading {
@@ -1211,7 +1271,7 @@ input:focus, textarea:focus, select:focus {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 20px;
     }
-    
+
     .materials-section {
         padding: 40px 0;
     }
@@ -1227,7 +1287,10 @@ input:focus, textarea:focus, select:focus {
     cursor: pointer;
     text-decoration: none;
     color: #000000;
-    display: block;
+    /* ensure card uses flex column so inner .view-materials can be pushed to bottom */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .material-card::before {
@@ -1246,7 +1309,7 @@ input:focus, textarea:focus, select:focus {
 
 .material-card:hover {
     transform: translateY(-12px);
-    box-shadow: 
+    box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.12),
         0 4px 8px rgba(0, 0, 0, 0.06) !important;
 }
@@ -1257,14 +1320,24 @@ input:focus, textarea:focus, select:focus {
 
 .material-card:hover .material-image {
     transform: scale(1.08);
-    filter: brightness(1.05);
+    filter: none !important;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .material-card .material-info {
-    position: relative;
-    z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;            /* fills space between image and footer */
 }
+
+.material-card .material-image {
+    width: 100%;
+    height: 150px;         /* same height for all cards */
+    object-fit: contain;   /* keeps aspect ratio */
+    flex-shrink: 0;
+}
+
+
 
 .material-card:hover .material-info::after {
     content: '';
@@ -1292,7 +1365,11 @@ input:focus, textarea:focus, select:focus {
     color: #4facfe;
     transform: translateX(8px);
     font-weight: 600;
+    margin-top: auto;   /* sticks footer to bottom of the card */
 }
+
+
+
 
 
 
@@ -1374,7 +1451,7 @@ input:focus, textarea:focus, select:focus {
 
 /* Stagger animation for related products */
 .stagger-animation .related-product-card {
-    opacity: 0;
+    opacity: 1 !important;
     transform: translateY(20px);
     animation: fadeInUp 0.5s ease forwards;
 }
@@ -1805,4 +1882,90 @@ body:not(.loader-complete) .container:not(#paint-bucket-loader) {
     .hero {
         min-height: -webkit-fill-available;
     }
+}
+
+
+/* ---------------------------- */
+/* Horizontal Scroll Material Rows */
+/* ---------------------------- */
+
+.materials-rows-container {
+  display: block; /* block to hold scroll rows */
+  margin: 60px auto;
+}
+
+/* MATERIAL ROW HORIZONTAL SCROLL */
+
+.materials-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.materials-row-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.materials-row-inner {
+    display: flex;
+    gap: 30px;
+    will-change: transform;
+    margin: 30px auto;
+}
+
+/* RESPONSIVE VISIBLE CARDS */
+.material-card {
+    flex: 0 0 calc(25% - 22.5px); /* 4 cards desktop */
+}
+
+@media (max-width: 1024px) {
+    .material-card {
+        flex: 0 0 calc(33.333% - 20px); /* 3 cards tablet */
+    }
+}
+
+@media (max-width: 767px) {
+    .material-card {
+        flex: 0 0 100%; /* 1 card mobile */
+    }
+}
+
+/* ARROWS */
+.row-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: #000;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 5;
+}
+
+.row-arrow:hover:not(:disabled) {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.row-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.row-arrow.left {
+    margin-right: 12px;
+}
+
+.row-arrow.right {
+    margin-left: 12px;
+}
+
+/* Remove the old grid styles */
+.materials-section .materials-grid {
+  display: none !important;
 }

@@ -151,6 +151,35 @@ function refreshPageAnimations() {
     }
 }
 
+// Equalize heights of material cards per row
+function equalizeMaterialCards() {
+    try {
+        const grid = document.getElementById('materialsGrid');
+        if (!grid) return;
+
+        const rows = grid.querySelectorAll('.materials-row-inner');
+        rows.forEach(row => {
+            let maxHeight = 0;
+            const cards = Array.from(row.querySelectorAll('.material-card'));
+            if (!cards.length) return;
+
+            // Reset any inline heights first
+            cards.forEach(card => card.style.height = 'auto');
+
+            // Measure
+            cards.forEach(card => {
+                const h = card.offsetHeight;
+                if (h > maxHeight) maxHeight = h;
+            });
+
+            // Apply
+            cards.forEach(card => card.style.height = maxHeight + 'px');
+        });
+    } catch (err) {
+        console.warn('equalizeMaterialCards error', err);
+    }
+}
+
 // Load all brands from Supabase
 async function loadBrands() {
     try {
@@ -269,13 +298,50 @@ async function loadMaterials() {
             materialsGrid.innerHTML = '';
 
             if (materials && materials.length > 0) {
-                materials.forEach(material => {
-                    const materialCard = createMaterialCard(material);
-                    materialsGrid.appendChild(materialCard);
+              // Clear before rendering
+              materialsGrid.innerHTML = '';
+
+              // Group into rows of 7
+              for (let i = 0; i < materials.length; i += 7) {
+                const group = materials.slice(i, i + 7);
+
+                const row = document.createElement('div');
+                row.className = 'materials-row';
+
+                const leftArrow = document.createElement('button');
+                leftArrow.className = 'row-arrow left';
+                leftArrow.innerHTML = '‹';
+                leftArrow.disabled = true;
+
+                const rightArrow = document.createElement('button');
+                rightArrow.className = 'row-arrow right';
+                rightArrow.innerHTML = '›';
+
+                const viewport = document.createElement('div');
+                viewport.className = 'materials-row-viewport';
+
+                const inner = document.createElement('div');
+                inner.className = 'materials-row-inner';
+
+                group.forEach(material => {
+                  const card = createMaterialCard(material);
+                  inner.appendChild(card);
                 });
 
-                // REFRESH ANIMATIONS AFTER CARDS ARE ADDED
-                setTimeout(() => refreshPageAnimations(), 100);
+                viewport.appendChild(inner);
+                row.appendChild(leftArrow);
+                row.appendChild(viewport);
+                row.appendChild(rightArrow);
+
+                materialsGrid.appendChild(row);
+
+                initMaterialRowScroll(row);
+              }
+
+              setTimeout(() => refreshPageAnimations(), 100);
+              
+              // Equalize heights after rows and arrows are added
+              setTimeout(() => equalizeMaterialCards(), 100);
             } else {
                 materialsGrid.innerHTML = `<div class="loading">No materials found. Please add materials in Supabase.</div>`;
             }
@@ -286,6 +352,73 @@ async function loadMaterials() {
             materialsGrid.innerHTML = `<div class="loading error">Error loading materials. Please try again later.</div>`;
         }
     }
+}
+
+function initMaterialRowScroll(row) {
+    const inner = row.querySelector('.materials-row-inner');
+    const leftArrow = row.querySelector('.row-arrow.left');
+    const rightArrow = row.querySelector('.row-arrow.right');
+
+    let currentX = 0;
+
+    function getScrollValues() {
+        const card = inner.querySelector('.material-card');
+        if (!card) {
+            return { scrollStep: 0, maxScroll: 0 };
+        }
+        const cardWidth = card.offsetWidth + 30; // card + gap
+        const scrollStep = cardWidth * 2; // scroll 2 cards
+
+        const viewport = row.querySelector('.materials-row-viewport');
+        const maxScroll = viewport ? inner.scrollWidth - viewport.offsetWidth : 0;
+
+        return { scrollStep, maxScroll };
+    }
+
+    function updateArrows(maxScroll) {
+        leftArrow.disabled = currentX >= 0;
+        // Disable right arrow if no scroll needed or at end
+        rightArrow.disabled = maxScroll <= 0 || Math.abs(currentX) >= maxScroll;
+    }
+
+    rightArrow.addEventListener('click', () => {
+        const { scrollStep, maxScroll } = getScrollValues();
+        currentX = Math.max(currentX - scrollStep, -maxScroll);
+
+        gsap.to(inner, {
+            x: currentX,
+            duration: 0.6,
+            ease: 'power3.out'
+        });
+
+        updateArrows(maxScroll);
+    });
+
+    leftArrow.addEventListener('click', () => {
+        const { scrollStep, maxScroll } = getScrollValues();
+        currentX = Math.min(currentX + scrollStep, 0);
+
+        gsap.to(inner, {
+            x: currentX,
+            duration: 0.6,
+            ease: 'power3.out'
+        });
+
+        updateArrows(maxScroll);
+    });
+
+    window.addEventListener('resize', () => {
+        currentX = 0;
+        gsap.set(inner, { x: 0 });
+        const { maxScroll } = getScrollValues();
+        updateArrows(maxScroll);
+    });
+
+    // Initialize arrow states after DOM is ready
+    setTimeout(() => {
+        const { maxScroll } = getScrollValues();
+        updateArrows(maxScroll);
+    }, 100);
 }
 
 // Create a material card element
@@ -390,8 +523,30 @@ window.websiteFunctions = {
     loadBrands,
     updateCartCount,
     createBrandCard,
+    equalizeMaterialCards,
     addToCartFallback
 };
+
+// Ensure equal heights on page load and when materialsGrid changes
+window.addEventListener('load', () => {
+    setTimeout(() => equalizeMaterialCards(), 150);
+});
+
+(function setupMaterialsObserver() {
+    try {
+        const grid = document.getElementById('materialsGrid');
+        if (!grid) return;
+
+        const observer = new MutationObserver(() => {
+            // Defer slightly to allow DOM changes to settle (images/styles)
+            setTimeout(() => equalizeMaterialCards(), 80);
+        });
+
+        observer.observe(grid, { childList: true, subtree: true });
+    } catch (err) {
+        // not critical
+    }
+})();
 
 // Export BRAND_MAP for other pages
 window.BRAND_MAP = BRAND_MAP;

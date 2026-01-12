@@ -325,6 +325,38 @@ class GsapAnimations {
                 });
             });
         }
+
+        // Subtle premium animation for the brands heading
+        const brandsHeading = document.querySelector('.brands-section h2');
+        if (brandsHeading) {
+            gsap.fromTo(brandsHeading,
+                { opacity: 0, scale: 0.95 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: brandsHeading,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        }
+        /* GSAP Scroll Animation */
+        gsap.to(".materials-section h2", {
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".materials-section h2",
+                start: "top 85%",
+                toggleActions: "play none none none",
+            }
+        });
+
     }
 
     animateCardGrids() {
@@ -604,6 +636,9 @@ class GsapAnimations {
         }
     }
 
+
+
+    
     // ===== INTERACTION ANIMATIONS =====
     initCartInteraction() {
         // Cart icon animation when adding items
