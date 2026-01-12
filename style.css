@@ -399,6 +399,32 @@ html {
         padding: 0 20px;
     }
     
+
+/* Product card stability: prevent layout shift by fixing minimum height and image aspect */
+.product-card {
+    min-height: 420px;
+    display: block;
+}
+
+.product-card img,
+.product-image-container img,
+.related-product-image {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+/* Accessibility: respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+    html {
+        scroll-behavior: auto !important;
+    }
+}
     .hero-actions {
         flex-direction: column;
         align-items: center;

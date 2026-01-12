@@ -164,13 +164,21 @@
             try {
                 console.log('Loading brand with ID:', brandId);
                 
-                const { data: brand, error: brandError } = await window.supabaseClient
-                    .from('brands')
-                    .select('*')
-                    .eq('id', brandId)
-                    .single();
-                
-                if (brandError) throw brandError;
+                    // Fetch brand with timeout and friendly fallback if available
+                    const brandRes = window.supabaseCallWithTimeout ?
+                        await window.supabaseCallWithTimeout(() => window.supabaseClient
+                            .from('brands')
+                            .select('*')
+                            .eq('id', brandId)
+                            .single(), 'brandInfo', 7000)
+                        : await window.supabaseClient
+                            .from('brands')
+                            .select('*')
+                            .eq('id', brandId)
+                            .single();
+
+                    const brand = brandRes && brandRes.data ? brandRes.data : brandRes;
+                    if (!brand) throw new Error('Brand not found');
                 
                 console.log('Brand loaded:', brand);
                 
@@ -214,20 +222,37 @@
                         <i class="fas fa-spinner fa-spin"></i> Loading products...
                     </div>
                 `;
-                
-                // Fetch products with their properties
-                const { data: products, error } = await window.supabaseClient
-                    .from('products')
-                    .select(`
-                        *,
-                        product_properties (
-                            property: properties (name, short_label, icon_url)
-                        )
-                    `)
-                    .eq('brand_id', brandId)
-                    .order('name');
-                
-                if (error) throw error;
+                // Fetch products with their properties with timeout wrapper
+                let productsRes;
+                try {
+                    productsRes = window.supabaseCallWithTimeout ?
+                        await window.supabaseCallWithTimeout(() => window.supabaseClient
+                            .from('products')
+                            .select(`
+                                *,
+                                product_properties (
+                                    property: properties (name, short_label, icon_url)
+                                )
+                            `)
+                            .eq('brand_id', brandId)
+                            .order('name'), 'productsGrid', 8000)
+                        : await window.supabaseClient
+                            .from('products')
+                            .select(`
+                                *,
+                                product_properties (
+                                    property: properties (name, short_label, icon_url)
+                                )
+                            `)
+                            .eq('brand_id', brandId)
+                            .order('name');
+                } catch (err) {
+                    console.error('Products fetch timeout or error:', err);
+                    productsGrid.innerHTML = `<div class="loading error">Still loading… please refresh or <button onclick="location.reload()">Retry</button></div>`;
+                    return;
+                }
+
+                const products = productsRes && productsRes.data ? productsRes.data : productsRes;
                 
                 console.log('Products loaded:', products);
                 
@@ -489,8 +514,8 @@
             content: '';
             position: absolute;
             bottom: -15px;
-            left: 40%;
-            width: 20%;
+            left: 10%;
+            width: 80%;
             height: 4px;
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             border-radius: 2px;

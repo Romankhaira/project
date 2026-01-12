@@ -1,5 +1,9 @@
 // animations.js - Interactive Animations for PEINTURE LAND
 
+// animations.js - Handles lightweight DOM-driven animations (hover, reveal, UI polish)
+// Responsibility: small DOM tweaks and CSS-based effects. Heavy timeline animations
+// and scroll-triggered transitions are handled in `js/gsap-animations.js` to avoid
+// duplicate work on the same selectors.
 class AnimationsManager {
     constructor() {
         this.init();

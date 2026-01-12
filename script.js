@@ -140,6 +140,35 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
+// Helper to run queries with a UI timeout fallback (used when supabaseCallWithTimeout is not available)
+async function runWithTimeoutUi(promiseFactory, container, timeoutMs = 7000) {
+    const timeoutId = setTimeout(() => {
+        try {
+            if (container && container.innerHTML && container.innerHTML.toLowerCase().includes('loading')) {
+                container.innerHTML = `<div class="loading">Still loading… please refresh or <button onclick="location.reload()">Retry</button></div>`;
+            }
+        } catch (e) {
+            // ignore
+        }
+    }, timeoutMs);
+
+    try {
+        if (window.supabaseCallWithTimeout) {
+            const res = await window.supabaseCallWithTimeout(promiseFactory, container ? container.id : null, timeoutMs);
+            clearTimeout(timeoutId);
+            return res;
+        }
+
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs));
+        const res = await Promise.race([promiseFactory(), timeoutPromise]);
+        clearTimeout(timeoutId);
+        return res;
+    } catch (err) {
+        clearTimeout(timeoutId);
+        throw err;
+    }
+}
+
 // Add to script.js - Helper function to refresh animations after dynamic content
 function refreshPageAnimations() {
     if (window.gsapAnimations && typeof window.gsapAnimations.refreshAnimations === 'function') {
@@ -194,14 +223,10 @@ async function loadBrands() {
         if (brandsGrid) {
             brandsGrid.innerHTML = `<div class="loading">Loading brands...</div>`;
         }
-        
-        // Fetch brands from Supabase
-        const { data: brands, error } = await window.supabaseClient
-            .from('brands')
-            .select('*')
-            .order('name');
 
-        if (error) throw error;
+        // Fetch brands from Supabase with timeout and UI fallback
+        const res = await runWithTimeoutUi(() => window.supabaseClient.from('brands').select('*').order('name'), brandsGrid, 7000);
+        const brands = res && res.data ? res.data : [];
 
         console.log('Brands loaded:', brands);
 
@@ -224,7 +249,10 @@ async function loadBrands() {
                 });
 
                 // REFRESH ANIMATIONS AFTER CARDS ARE ADDED
-                setTimeout(() => refreshPageAnimations(), 100);
+                setTimeout(() => {
+                    refreshPageAnimations();
+                    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+                }, 100);
             } else {
                 brandsGrid.innerHTML = `<div class="loading">No brands found. Please add brands in Supabase.</div>`;
             }
@@ -282,14 +310,10 @@ async function loadMaterials() {
         if (materialsGrid) {
             materialsGrid.innerHTML = `<div class="loading">Loading materials...</div>`;
         }
-        
-        // Fetch materials from Supabase
-        const { data: materials, error } = await window.supabaseClient
-            .from('materials')
-            .select('*')
-            .order('name');
 
-        if (error) throw error;
+        // Fetch materials from Supabase with timeout and UI fallback
+        const res = await runWithTimeoutUi(() => window.supabaseClient.from('materials').select('*').order('name'), materialsGrid, 7000);
+        const materials = res && res.data ? res.data : [];
 
         console.log('Materials loaded:', materials);
 
@@ -339,6 +363,8 @@ async function loadMaterials() {
               }
 
               setTimeout(() => refreshPageAnimations(), 100);
+              // Ensure ScrollTrigger recalculates after dynamic layout
+              setTimeout(() => { if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }, 300);
               
               // Equalize heights after rows and arrows are added
               setTimeout(() => equalizeMaterialCards(), 100);
@@ -550,3 +576,12 @@ window.addEventListener('load', () => {
 
 // Export BRAND_MAP for other pages
 window.BRAND_MAP = BRAND_MAP;
+
+// Global JS error logger for safer debugging
+window.onerror = function(message, source, lineno, colno, error) {
+    try {
+        console.error('Global error caught:', message, 'at', source + ':' + lineno + ':' + colno, error || '');
+    } catch (e) {
+        // ignore
+    }
+};

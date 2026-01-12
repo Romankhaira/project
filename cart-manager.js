@@ -121,15 +121,21 @@ class CartManager {
     
     // Add item to cart
     addItem(product, quantity = 1) {
+        // Clamp quantity to at least 1 and at most available stock (if provided)
+        const maxStock = (product && typeof product.stock === 'number' && product.stock > 0) ? product.stock : 9999;
+        const safeQty = Math.max(1, Math.min(parseInt(quantity, 10) || 1, maxStock));
+
         // Create unique key: product ID + shade ID (or 'no-shade')
         const shadeId = product.shade ? product.shade.id : 'no-shade';
         const itemKey = `${product.id}_${shadeId}`;
-        
+
         // Find existing item by KEY (not just ID)
         const existingItem = this.cart.find(item => item.key === itemKey);
-        
+
         if (existingItem) {
-            existingItem.quantity += quantity;
+            // Clamp existing quantity as well
+            const newQty = Math.max(1, Math.min(existingItem.quantity + safeQty, maxStock));
+            existingItem.quantity = newQty;
         } else {
             this.cart.push({
                 key: itemKey,           // NEW: Unique identifier
@@ -139,7 +145,9 @@ class CartManager {
                 image_url: product.image_url,
                 brand_id: product.brand_id,
                 shade: product.shade,   // Store full color info
-                quantity: quantity
+                quantity: safeQty,
+                price: product.price,   // preserve price if present
+                stock: product.stock
             });
         }
         
@@ -157,10 +165,12 @@ class CartManager {
     updateQuantity(itemKey, quantity) {
         const item = this.cart.find(item => item.key === itemKey);
         if (item) {
-            if (quantity <= 0) {
+            const maxStock = (typeof item.stock === 'number' && item.stock > 0) ? item.stock : 9999;
+            const safeQty = Math.max(1, Math.min(parseInt(quantity, 10) || 1, maxStock));
+            if (safeQty <= 0) {
                 this.removeItem(itemKey);
             } else {
-                item.quantity = quantity;
+                item.quantity = safeQty;
                 this.saveCart();
             }
         }

@@ -17,23 +17,34 @@ class ColorPickerAnimations {
             dropdownHeader.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 if (dropdown.style.display === 'block') {
-                    gsap.to(dropdown, {
-                        height: 0,
-                        opacity: 0,
-                        duration: 0.3,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            dropdown.style.display = 'none';
-                        }
-                    });
+                    if (typeof gsap !== 'undefined' && gsap.to) {
+                        gsap.to(dropdown, {
+                            height: 0,
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.out",
+                            onComplete: () => {
+                                dropdown.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        dropdown.style.display = 'none';
+                        dropdown.style.height = '0';
+                        dropdown.style.opacity = '0';
+                    }
                 } else {
                     dropdown.style.display = 'block';
-                    gsap.fromTo(dropdown,
-                        { height: 0, opacity: 0 },
-                        { height: 'auto', opacity: 1, duration: 0.3, ease: "power2.out" }
-                    );
+                    if (typeof gsap !== 'undefined' && gsap.fromTo) {
+                        gsap.fromTo(dropdown,
+                            { height: 0, opacity: 0 },
+                            { height: 'auto', opacity: 1, duration: 0.3, ease: "power2.out" }
+                        );
+                    } else {
+                        dropdown.style.height = '';
+                        dropdown.style.opacity = '1';
+                    }
                 }
             });
         }

@@ -96,6 +96,10 @@
                             <span>Total Items:</span>
                             <span id="orderTotalItems">0</span>
                         </div>
+                        <div class="summary-total">
+                            <span>Total Price:</span>
+                            <span id="orderTotalPrice">€0.00</span>
+                        </div>
                     </div>
                     
                     <!-- Form Actions -->
@@ -197,21 +201,35 @@
     <script>
         // Checkout page specific JavaScript - UPDATED WITH COLOR SUPPORT
         document.addEventListener('DOMContentLoaded', function() {
+            // Redirect to cart if cart is empty (block direct checkout access)
+            const currentCart = (window.cartManager && typeof window.cartManager.getCartItems === 'function') ?
+                window.cartManager.getCartItems() : (JSON.parse(localStorage.getItem('peintureLandCart')) || []);
+            if (!currentCart || currentCart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
             initializeAnimations();
             loadOrderSummary();
             updateCartCount();
             
             // WhatsApp checkout button
-            document.getElementById('whatsappCheckout').addEventListener('click', function(e) {
-                e.preventDefault();
-                processWhatsAppOrder();
-            });
+            const waBtn = document.getElementById('whatsappCheckout');
+            if (waBtn) {
+                waBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    processWhatsAppOrder();
+                });
+            }
             
             // Form validation on submit
-            document.querySelector('.checkout-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                processWhatsAppOrder();
-            });
+            const checkoutForm = document.querySelector('.checkout-form');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    processWhatsAppOrder();
+                });
+            }
             
             // Add input focus animations
             setupFormAnimations();
@@ -258,41 +276,72 @@
         }
         
         function loadOrderSummary() {
-            const cart = window.cartManager.getCartItems();
+            const cart = (window.cartManager && typeof window.cartManager.getCartItems === 'function') ?
+                window.cartManager.getCartItems() : (JSON.parse(localStorage.getItem('peintureLandCart')) || []);
             const orderItemsDiv = document.getElementById('orderItems');
             let totalItems = 0;
-            
-            if (cart.length === 0) {
+            let totalPrice = 0;
+
+            if (!cart || cart.length === 0) {
                 orderItemsDiv.innerHTML = '<p class="empty-order animate-fade-in">Your cart is empty</p>';
                 document.getElementById('orderTotalItems').textContent = '0';
+                document.getElementById('orderTotalPrice').textContent = '€0.00';
                 return;
             }
-            
+
             orderItemsDiv.innerHTML = '';
-            
+
             cart.forEach((item, index) => {
-                totalItems += item.quantity;
-                
+                // Clamp quantity between 1 and stock
+                const maxStock = (typeof item.stock === 'number' && item.stock > 0) ? item.stock : 9999;
+                const rawQty = parseInt(item.quantity, 10) || 1;
+                const qty = Math.max(1, Math.min(rawQty, maxStock));
+
+                // Recalculate price (assumes item.price may exist)
+                const unitPrice = Number(item.price || 0);
+                const subtotal = unitPrice * qty;
+
+                totalItems += qty;
+                totalPrice += subtotal;
+
+                // If quantity was clamped, ensure cart reflects it
+                if (qty !== rawQty) {
+                    if (window.cartManager && typeof window.cartManager.updateQuantity === 'function') {
+                        try { window.cartManager.updateQuantity(item.key || `${item.id}_no-shade`, qty); } catch (e) {}
+                    } else {
+                        // update localStorage fallback
+                        try {
+                            const storeCart = JSON.parse(localStorage.getItem('peintureLandCart')) || [];
+                            const idx = storeCart.findIndex(ci => (ci.key ? ci.key === (item.key || `${item.id}_no-shade`) : ci.id === item.id));
+                            if (idx > -1) { storeCart[idx].quantity = qty; localStorage.setItem('peintureLandCart', JSON.stringify(storeCart)); }
+                        } catch (e) {}
+                    }
+                }
+
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'order-item animate-fade-in-up';
                 itemDiv.style.animationDelay = `${index * 0.1}s`;
-                
-                // UPDATED: Include color information in order summary
+
                 itemDiv.innerHTML = `
-                    <span class="item-name">${item.name} × ${item.quantity}</span>
+                    <span class="item-name">${item.name} × ${qty}</span>
                     ${item.shade ? `<span class="item-color">Color: ${item.shade.code}</span>` : ''}
+                    <span class="item-price">${unitPrice > 0 ? '€' + unitPrice.toFixed(2) : ''}</span>
+                    ${unitPrice > 0 ? `<span class="item-subtotal">Subtotal: €${subtotal.toFixed(2)}</span>` : ''}
                 `;
                 orderItemsDiv.appendChild(itemDiv);
             });
-            
+
             document.getElementById('orderTotalItems').textContent = totalItems;
-            
+            document.getElementById('orderTotalPrice').textContent = `€${totalPrice.toFixed(2)}`;
+
             // Animate total items counter
             const totalItemsElement = document.getElementById('orderTotalItems');
-            totalItemsElement.classList.add('animate-pulse');
-            setTimeout(() => {
-                totalItemsElement.classList.remove('animate-pulse');
-            }, 500);
+            if (totalItemsElement) {
+                totalItemsElement.classList.add('animate-pulse');
+                setTimeout(() => {
+                    totalItemsElement.classList.remove('animate-pulse');
+                }, 500);
+            }
         }
         
         function processWhatsAppOrder() {
@@ -810,7 +859,7 @@
         
         .form-group {
             margin-bottom: 25px;
-            opacity: 0;
+            opacity: 1;
             transform: translateY(20px);
         }
         
@@ -854,7 +903,7 @@
             padding: 25px;
             border-radius: 15px;
             margin: 30px 0;
-            opacity: 0;
+            opacity: 1;
             transform: translateY(20px);
         }
         
@@ -913,7 +962,7 @@
             padding: 20px;
             border-radius: 10px;
             margin-top: 30px;
-            opacity: 0;
+            opacity: 1;
             transform: translateY(20px);
             animation: fadeInUp 0.8s ease 1s forwards;
         }
@@ -985,7 +1034,7 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.1);
             opacity: 1;
-            transform: translateX(-20px);
+            transform: translateX(0px);
         }
 
         .btn-back:hover {
@@ -1006,7 +1055,7 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             animation: pulseGlow 2s ease-in-out infinite;
             opacity: 1;
-            transform: translateY(20px);
+            transform: translateY(0px);
         }
 
         .btn-whatsapp:hover {
